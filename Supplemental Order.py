@@ -1,13 +1,12 @@
 import pandas as pd
 import numpy as np
 import openpyxl
-import xlsxwriter
 from openpyxl import load_workbook
 from openpyxl.formula import Tokenizer
 from openpyxl.formula.translate import Translator
 
-df = pd.read_excel(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\Supplemental Order\Supplemental Order Data.xlsx", skiprows=24)
-available_inventory = pd.read_csv(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\Supplemental Order\Available Inventory.csv")
+df = pd.read_excel(r"C:\Users\clata\OneDrive\Desktop\python\work\supplemental order\Supplemental Order Data.xlsx", skiprows=24)
+available_inventory = pd.read_csv(r"C:\Users\clata\OneDrive\Desktop\python\work\supplemental order\Available Inventory.csv")
 
 # getting the unique list of SKU's and saving it to dataframe
 unique_sku = df['Vendor Stk Nbr'].unique()
@@ -33,6 +32,13 @@ for item in unique_sku:
     item_string = str(inv_item)
     available_inventory[available_inventory['Item'] == item_string]
     available_inv = available_inventory.iloc[0][2]
+
+    #reducing available inventory for shared items
+    shared_items = [1528,4114,5017,5091,5249,5471]
+    if item in shared_items:
+        available_inv *= 0.5
+    else:
+        available_inv
 
     # calculating rolling sum
     df_filtered['units_sent_dc'] = 0
@@ -66,5 +72,5 @@ for item in unique_sku:
     sto_single = sto_single.loc[sto_single['units_sent_dc'] != 0]
 
 
-df.to_excel(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\Supplemental Order\Supplemental Order TESTER.xlsx")
-sto_single.to_excel(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\Supplemental Order\sto_single_.xlsx")
+df.to_excel(r"C:\Users\clata\OneDrive\Desktop\python\work\supplemental order\Supplemental Order TESTER.xlsx")
+sto_single.to_excel(r"C:\Users\clata\OneDrive\Desktop\python\work\supplemental order\sto_single_.xlsx")
