@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 from openpyxl.formula import Tokenizer
 from openpyxl.formula.translate import Translator
 
-df = pd.read_excel(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\DC Push\DC Push Build.xlsx" , skiprows=29)
+df = pd.read_excel(r"DC Push Build.xlsx" , skiprows=29)
 
 # getting the unique list of SKU's and saving it to a dataframe
 unique_sku = df['Vendor Stk Nbr'].unique()
