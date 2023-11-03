@@ -64,6 +64,7 @@ forecast_variance_formatted = f'{forecast_variance:.2%}'
 # Create a new DataFrame for next year's forecast
 current_year = date.today().year
 next_year = current_year + 1
+last_year = current_year - 1
 next_year_forecast = filtered_data[filtered_data['Year'] == next_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
 next_year_forecast['SO Quantity'] = 0  # Set SO Quantity to 0 for next year forecast
 
@@ -71,11 +72,24 @@ next_year_forecast['SO Quantity'] = 0  # Set SO Quantity to 0 for next year fore
 this_year_forecast = filtered_data[filtered_data['Year'] == current_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
 this_year_forecast['SO Quantity'] = 0  # Set SO Quantity to 0 for this year forecast
 
-# Filter the "SO Quantity" data for this year
-this_year_so_quantity = summed_df[summed_df['Year'] == current_year][['Year', 'Month', 'SO Quantity']]
+# Create a new DataFrame for this year's SO Quantity
+this_year_so_quantity = filtered_data[filtered_data['Year'] == current_year].groupby(['Year','Month']).agg({'SO Quantity': 'sum'}).reset_index()
+
+# Create a new Data Frame for last year's SO Quantity
+last_year_so_quantity = filtered_data[filtered_data['Year'] == last_year].groupby(['Year','Month']).agg({'SO Quantity':'sum'}).reset_index()
 
 # Concatenate the DataFrames for current year, next year, and previous years
-combined_df = pd.concat([this_year_so_quantity, this_year_forecast, next_year_forecast])
+combined_df = pd.concat([this_year_so_quantity, last_year_so_quantity, this_year_forecast, next_year_forecast])
+
+# Calculate Next Year Total Forecast Qty
+next_year_total_forecast = int(next_year_forecast['Forecast Qty'].sum())
+next_year_total_forecast_formatted = '{:,}'.format(next_year_total_forecast)
+
+# Calculate SO Quantity growth from this year to last year
+this_year_so_quantity_formatted = this_year_so_quantity['SO Quantity'].sum()
+last_year_so_quantity_formatted = last_year_so_quantity['SO Quantity'].sum()
+so_quantity_growth = (this_year_so_quantity_formatted - last_year_so_quantity_formatted) / last_year_so_quantity_formatted
+so_quantity_growth_formatted = f'{so_quantity_growth: .2%}'
 
 # Apply CSS for styling the total boxes
 st.markdown(
@@ -100,10 +114,12 @@ st.markdown(
 )
 
 # Display the total boxes with values and labels
-total_col1, total_col2, total_col3 = st.columns(3)
+total_col1, total_col2, total_col3, total_col4, total_col5 = st.columns(5)
 total_col1.markdown(f'<div class="total-box"><div class="total-label">Total SO Quantity</div>{total_so_quantity_formatted}</div>', unsafe_allow_html=True)
-total_col2.markdown(f'<div class="total-box"><div class="total-label">Total Forecast Qty</div>{total_forecast_qty_formatted}</div>', unsafe_allow_html=True)
+total_col2.markdown(f'<div class="total-box"><div class="total-label">This Year Total Forecast</div>{total_forecast_qty_formatted}</div>', unsafe_allow_html=True)
 total_col3.markdown(f'<div class="total-box"><div class="total-label">Forecast Variance</div>{forecast_variance_formatted}</div>', unsafe_allow_html=True)
+total_col4.markdown(f'<div class="total-box"><div class="total-label">Next Year Total Forecast</div>{next_year_total_forecast_formatted}</div>', unsafe_allow_html=True)
+total_col5.markdown(f'<div class="total-box"><div class="total-label">SO Quantity Growth</div>{so_quantity_growth_formatted}</div>', unsafe_allow_html=True)
 
 # Create the line graph figure
 fig_updated = px.line(
@@ -117,7 +133,8 @@ fig_updated = px.line(
 # Add the lines for "This Year Forecast" and "Next Year Forecast"
 fig_updated.add_scatter(x=this_year_forecast['Month'], y=this_year_forecast['Forecast Qty'], mode='lines', name='This Year Forecast', line=dict(color='blue'))
 fig_updated.add_scatter(x=next_year_forecast['Month'], y=next_year_forecast['Forecast Qty'], mode='lines', name='Next Year Forecast', line=dict(color='green'))
-fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['SO Quantity'], mode='lines', name='SO Quantity', line=dict(color='red'))
+fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['SO Quantity'], mode='lines', name='This Year SO Quantity', line=dict(color='red'))
+fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='pink'))
 
 fig_updated.update_xaxes(title_text="Month")
 fig_updated.update_yaxes(title_text="Quantity")
