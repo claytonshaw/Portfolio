@@ -144,3 +144,9 @@ fig_updated.update_traces(visible=False, selector=dict(name="Forecast Qty"))
 
 # Display the updated line graph
 st.plotly_chart(fig_updated, use_container_width=True)
+
+# Title for the DataFrame
+st.header("Editable Combined DataFrame")
+
+# Create an editable DataFrame using st.dataframe
+combined_df_editable = st.data_editor(combined_df)
