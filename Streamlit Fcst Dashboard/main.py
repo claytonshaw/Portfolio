@@ -2,12 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import date, datetime
+from prophet import Prophet
+
 
 # Set the page width to a wider value
 st.set_page_config(layout="wide")
 
 # Title
-st.title("Sales Order and Forecast Dashboard")
+st.title("SOF Dashboard")
 
 # Load data from the CSV file
 @st.cache_data
@@ -58,8 +60,22 @@ forecast_variance = (total_forecast_qty - total_so_quantity) / total_so_quantity
 # Format forecast variance as a percentage
 forecast_variance_formatted = f'{forecast_variance:.2%}'
 
-# Create a new DataFrame for next year's forecast
+# Current Year
 current_year = date.today().year
+
+# Creating Prophet Forecast
+curr_date = pd.to_datetime(date.today())
+forecast_df = df.groupby(['Ship Date']).agg({'SO Quantity': 'sum'}).reset_index()
+forecast_df = forecast_df[forecast_df['Ship Date'] <= curr_date]
+forecast_df = forecast_df.rename(columns={'Ship Date': 'ds', 'SO Quantity': 'y'})  # Rename columns to 'ds' and 'y'
+m = Prophet()
+m.fit(forecast_df)
+future = m.make_future_dataframe(periods=365)
+forecast = m.predict(future)
+forecast.rename(columns = {'ds':'Ship Date'}, inplace = True)
+forecast['Month'] = forecast['Ship Date'].dt.month
+
+# Create a new DataFrame for next year's forecast
 next_year = current_year + 1
 last_year = current_year - 1
 next_year_forecast = filtered_data[filtered_data['Year'] == next_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
@@ -86,6 +102,7 @@ combined_df['This Year SO Quantity'] = this_year_so_quantity['This Year SO Quant
 combined_df['Last Year SO Quantity'] = last_year_so_quantity['Last Year SO Quantity'].astype(int)
 combined_df['This Year Forecast'] = this_year_forecast['This Year Forecast'].astype(int)
 combined_df['Next Year Forecast'] = next_year_forecast['Next Year Forecast'].astype(int)
+combined_df['Prophet'] = forecast['yhat'].astype(int)
 
 # Calculate Next Year Total Forecast Qty
 next_year_total_forecast = int(next_year_forecast['Next Year Forecast'].sum())
@@ -127,29 +144,37 @@ total_col3.markdown(f'<div class="total-box"><div class="total-label">Forecast V
 total_col4.markdown(f'<div class="total-box"><div class="total-label">Next Year Total Forecast</div>{next_year_total_forecast_formatted}</div>', unsafe_allow_html=True)
 total_col5.markdown(f'<div class="total-box"><div class="total-label">SO Quantity Growth</div>{so_quantity_growth_formatted}</div>', unsafe_allow_html=True)
 
-# Title for the DataFrame
-st.header("Forecast Table")
+st.title('')
 
-# Create an editable DataFrame using st.dataframe
-#combined_df_editable = combined_df.drop(columns = ['This Year SO Quantity','Last Year SO Quantity'])
-#combined_df_editable.set_index('Month', inplace = True)
-combined_df_editable = st.data_editor(combined_df, use_container_width=True)
+left_column, right_column = st.columns([1,2])   
+
+# create an editable dataframe
+combined_df.drop(columns = ['This Year SO Quantity','Last Year SO Quantity'], inplace = True)
+combined_df_editable = left_column.data_editor(combined_df, hide_index=True, disabled=('This Year Forecast'))
 
 # Create the line graph figure
 fig_updated = px.line(
     combined_df_editable,
     x='Month',
-    y=['This Year Forecast'],
-    title="Sales Order and Forecast (Updated)"
+    y=['This Year Forecast','Next Year Forecast','Prophet'],
+    width = 900,
+    color_discrete_map={'This Year Forecast':'#cc5628', 'Next Year Forecast':'red', 'Prophet':'yellow'}
 )
 
 # Add the lines for "This Year Forecast" and "Next Year Forecast"
-fig_updated.add_scatter(x=next_year_forecast['Month'], y=next_year_forecast['Next Year Forecast'], mode='lines', name='Next Year Forecast', line=dict(color='green'))
-fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['This Year SO Quantity'], mode='lines', name='This Year SO Quantity', line=dict(color='red'))
-fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['Last Year SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='yellow'))
+fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['This Year SO Quantity'], mode='lines', name='This Year SO Quantity', line=dict(color='#2f4359'))
+fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['Last Year SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='#949598'))
 
 fig_updated.update_xaxes(title_text="Month Number")
 fig_updated.update_yaxes(title_text="Unit Quantity")
+fig_updated.update_layout(legend = dict(
+    orientation='h',
+    yanchor='bottom',
+    y=1.07,
+    xanchor='right',
+    x=0.8),
+    legend_title = ''    
+)
 
 # Display the updated line graph
-st.plotly_chart(fig_updated, use_container_width=True)
+right_column.plotly_chart(fig_updated)
