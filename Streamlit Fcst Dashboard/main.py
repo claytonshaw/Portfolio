@@ -60,8 +60,10 @@ forecast_variance = (total_forecast_qty - total_so_quantity) / total_so_quantity
 # Format forecast variance as a percentage
 forecast_variance_formatted = f'{forecast_variance:.2%}'
 
-# Current Year
+# Year Variables
 current_year = date.today().year
+next_year = current_year + 1
+last_year = current_year - 1
 
 # Creating Prophet Forecast
 curr_date = pd.to_datetime(date.today())
@@ -76,8 +78,6 @@ forecast.rename(columns = {'ds':'Ship Date'}, inplace = True)
 forecast['Month'] = forecast['Ship Date'].dt.month
 
 # Create a new DataFrame for next year's forecast
-next_year = current_year + 1
-last_year = current_year - 1
 next_year_forecast = filtered_data[filtered_data['Year'] == next_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
 next_year_forecast['SO Quantity'] = 0  # Set SO Quantity to 0 for next year forecast
 next_year_forecast.rename(columns = {'Forecast Qty':'Next Year Forecast'}, inplace = True)
