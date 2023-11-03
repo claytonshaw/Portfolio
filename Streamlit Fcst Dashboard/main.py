@@ -65,9 +65,9 @@ current_year = date.today().year
 
 # Creating Prophet Forecast
 curr_date = pd.to_datetime(date.today())
-forecast_df = df.groupby(['Ship Date']).agg({'SO Quantity': 'sum'}).reset_index()
-forecast_df = forecast_df[forecast_df['Ship Date'] <= curr_date]
-forecast_df = forecast_df.rename(columns={'Ship Date': 'ds', 'SO Quantity': 'y'})  # Rename columns to 'ds' and 'y'
+forecast_df = filtered_data.groupby(['Ship Date']).agg({'SO Quantity': 'sum'}).reset_index()
+forecast_df = filtered_data[filtered_data['Ship Date'] <= curr_date]
+forecast_df = filtered_data.rename(columns={'Ship Date': 'ds', 'SO Quantity': 'y'})  # Rename columns to 'ds' and 'y'
 m = Prophet()
 m.fit(forecast_df)
 future = m.make_future_dataframe(periods=365)
