@@ -44,9 +44,6 @@ if selected_parent != "All":
 if selected_item != "All":
     filtered_data = filtered_data[filtered_data['Item'] == selected_item]
 
-# Sum the 'Forecast Qty' and 'SO Quantity' by month and year
-summed_df = filtered_data.groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum', 'SO Quantity': 'sum'}).reset_index()
-
 # Calculate total SO Quantity and Total Forecast Qty
 total_so_quantity = int(filtered_data['SO Quantity'].sum())
 total_forecast_qty = int(filtered_data['Forecast Qty'].sum())
@@ -67,27 +64,36 @@ next_year = current_year + 1
 last_year = current_year - 1
 next_year_forecast = filtered_data[filtered_data['Year'] == next_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
 next_year_forecast['SO Quantity'] = 0  # Set SO Quantity to 0 for next year forecast
+next_year_forecast.rename(columns = {'Forecast Qty':'Next Year Forecast'}, inplace = True)
 
 # Create a new DataFrame for this year's forecast
 this_year_forecast = filtered_data[filtered_data['Year'] == current_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
 this_year_forecast['SO Quantity'] = 0  # Set SO Quantity to 0 for this year forecast
+this_year_forecast.rename(columns = {'Forecast Qty': 'This Year Forecast'}, inplace = True)
 
 # Create a new DataFrame for this year's SO Quantity
 this_year_so_quantity = filtered_data[filtered_data['Year'] == current_year].groupby(['Year','Month']).agg({'SO Quantity': 'sum'}).reset_index()
+this_year_so_quantity.rename(columns = {'SO Quantity': 'This Year SO Quantity'}, inplace = True)
 
 # Create a new Data Frame for last year's SO Quantity
 last_year_so_quantity = filtered_data[filtered_data['Year'] == last_year].groupby(['Year','Month']).agg({'SO Quantity':'sum'}).reset_index()
+last_year_so_quantity.rename(columns = {'SO Quantity': 'Last Year SO Quantity'}, inplace = True)
 
 # Concatenate the DataFrames for current year, next year, and previous years
-combined_df = pd.concat([this_year_so_quantity, last_year_so_quantity, this_year_forecast, next_year_forecast])
+combined_df = pd.DataFrame()
+combined_df['Month'] = this_year_forecast['Month']
+combined_df['This Year SO Quantity'] = this_year_so_quantity['This Year SO Quantity'].astype(int)
+combined_df['Last Year SO Quantity'] = last_year_so_quantity['Last Year SO Quantity'].astype(int)
+combined_df['This Year Forecast'] = this_year_forecast['This Year Forecast'].astype(int)
+combined_df['Next Year Forecast'] = next_year_forecast['Next Year Forecast'].astype(int)
 
 # Calculate Next Year Total Forecast Qty
-next_year_total_forecast = int(next_year_forecast['Forecast Qty'].sum())
+next_year_total_forecast = int(next_year_forecast['Next Year Forecast'].sum())
 next_year_total_forecast_formatted = '{:,}'.format(next_year_total_forecast)
 
 # Calculate SO Quantity growth from this year to last year
-this_year_so_quantity_formatted = this_year_so_quantity['SO Quantity'].sum()
-last_year_so_quantity_formatted = last_year_so_quantity['SO Quantity'].sum()
+this_year_so_quantity_formatted = this_year_so_quantity['This Year SO Quantity'].sum()
+last_year_so_quantity_formatted = last_year_so_quantity['Last Year SO Quantity'].sum()
 so_quantity_growth = (this_year_so_quantity_formatted - last_year_so_quantity_formatted) / last_year_so_quantity_formatted
 so_quantity_growth_formatted = f'{so_quantity_growth: .2%}'
 
@@ -121,32 +127,29 @@ total_col3.markdown(f'<div class="total-box"><div class="total-label">Forecast V
 total_col4.markdown(f'<div class="total-box"><div class="total-label">Next Year Total Forecast</div>{next_year_total_forecast_formatted}</div>', unsafe_allow_html=True)
 total_col5.markdown(f'<div class="total-box"><div class="total-label">SO Quantity Growth</div>{so_quantity_growth_formatted}</div>', unsafe_allow_html=True)
 
+# Title for the DataFrame
+st.header("Forecast Table")
+
+# Create an editable DataFrame using st.dataframe
+#combined_df_editable = combined_df.drop(columns = ['This Year SO Quantity','Last Year SO Quantity'])
+#combined_df_editable.set_index('Month', inplace = True)
+combined_df_editable = st.data_editor(combined_df, use_container_width=True)
+
 # Create the line graph figure
 fig_updated = px.line(
-    combined_df,
+    combined_df_editable,
     x='Month',
-    y=['Forecast Qty'],
-    title="Sales Order and Forecast (Updated)",
-    labels={'Forecast Qty': 'Total Forecast Qty'},
+    y=['This Year Forecast'],
+    title="Sales Order and Forecast (Updated)"
 )
 
 # Add the lines for "This Year Forecast" and "Next Year Forecast"
-fig_updated.add_scatter(x=this_year_forecast['Month'], y=this_year_forecast['Forecast Qty'], mode='lines', name='This Year Forecast', line=dict(color='blue'))
-fig_updated.add_scatter(x=next_year_forecast['Month'], y=next_year_forecast['Forecast Qty'], mode='lines', name='Next Year Forecast', line=dict(color='green'))
-fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['SO Quantity'], mode='lines', name='This Year SO Quantity', line=dict(color='red'))
-fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='pink'))
+fig_updated.add_scatter(x=next_year_forecast['Month'], y=next_year_forecast['Next Year Forecast'], mode='lines', name='Next Year Forecast', line=dict(color='green'))
+fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['This Year SO Quantity'], mode='lines', name='This Year SO Quantity', line=dict(color='red'))
+fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['Last Year SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='yellow'))
 
-fig_updated.update_xaxes(title_text="Month")
-fig_updated.update_yaxes(title_text="Quantity")
-
-# Remove "Forecast Qty" trace from the figure
-fig_updated.update_traces(visible=False, selector=dict(name="Forecast Qty"))
+fig_updated.update_xaxes(title_text="Month Number")
+fig_updated.update_yaxes(title_text="Unit Quantity")
 
 # Display the updated line graph
 st.plotly_chart(fig_updated, use_container_width=True)
-
-# Title for the DataFrame
-st.header("Editable Combined DataFrame")
-
-# Create an editable DataFrame using st.dataframe
-combined_df_editable = st.data_editor(combined_df)
