@@ -75,7 +75,9 @@ m.fit(forecast_df)
 future = m.make_future_dataframe(periods=365)
 forecast = m.predict(future)
 forecast.rename(columns = {'ds':'Ship Date'}, inplace = True)
+forecast['Year'] = forecast['Ship Date'].dt.year
 forecast['Month'] = forecast['Ship Date'].dt.month
+next_year_prophet = forecast[forecast['Year']==next_year].groupby(['Year','Month']).agg({'yhat':'sum'}).reset_index().astype(int)
 
 # Create a new DataFrame for next year's forecast
 next_year_forecast = filtered_data[filtered_data['Year'] == next_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
@@ -102,7 +104,6 @@ combined_df['This Year SO Quantity'] = this_year_so_quantity['This Year SO Quant
 combined_df['Last Year SO Quantity'] = last_year_so_quantity['Last Year SO Quantity'].astype(int)
 combined_df['This Year Forecast'] = this_year_forecast['This Year Forecast'].astype(int)
 combined_df['Next Year Forecast'] = next_year_forecast['Next Year Forecast'].astype(int)
-combined_df['Prophet'] = forecast['yhat'].astype(int)
 
 # Calculate Next Year Total Forecast Qty
 next_year_total_forecast = int(next_year_forecast['Next Year Forecast'].sum())
@@ -156,14 +157,15 @@ combined_df_editable = left_column.data_editor(combined_df, hide_index=True, dis
 fig_updated = px.line(
     combined_df_editable,
     x='Month',
-    y=['This Year Forecast','Next Year Forecast','Prophet'],
+    y=['This Year Forecast','Next Year Forecast'],
     width = 900,
-    color_discrete_map={'This Year Forecast':'#cc5628', 'Next Year Forecast':'red', 'Prophet':'yellow'}
+    color_discrete_map={'This Year Forecast':'#cc5628', 'Next Year Forecast':'red'}
 )
 
 # Add the lines for "This Year Forecast" and "Next Year Forecast"
 fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['This Year SO Quantity'], mode='lines', name='This Year SO Quantity', line=dict(color='#2f4359'))
 fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['Last Year SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='#949598'))
+fig_updated.add_scatter(x=next_year_prophet['Month'], y=next_year_prophet['yhat'], mode='lines', name='Prophet', line=dict(color='yellow'))
 
 fig_updated.update_xaxes(title_text="Month Number")
 fig_updated.update_yaxes(title_text="Unit Quantity")
