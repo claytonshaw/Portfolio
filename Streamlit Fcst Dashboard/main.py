@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from datetime import date, datetime
 from prophet import Prophet
+from functions import forecaster
 
 
 # Set the page width to a wider value
@@ -79,18 +80,7 @@ next_year = current_year + 1
 last_year = current_year - 1
 
 # Creating Prophet Forecast
-curr_date = pd.to_datetime(date.today())
-forecast_df = filtered_data.groupby(['Ship Date']).agg({'SO Quantity': 'sum'}).reset_index()
-forecast_df = filtered_data[filtered_data['Ship Date'] <= curr_date]
-forecast_df = filtered_data.rename(columns={'Ship Date': 'ds', 'SO Quantity': 'y'})  # Rename columns to 'ds' and 'y'
-m = Prophet()
-m.fit(forecast_df)
-future = m.make_future_dataframe(periods=365)
-forecast = m.predict(future)
-forecast.rename(columns = {'ds':'Ship Date'}, inplace = True)
-forecast['Year'] = forecast['Ship Date'].dt.year
-forecast['Month'] = forecast['Ship Date'].dt.month
-next_year_prophet = forecast[forecast['Year']==next_year].groupby(['Year','Month']).agg({'yhat':'sum'}).reset_index().astype(int)
+next_year_prophet = forecaster(filtered_data,next_year)
 
 # Create a new DataFrame for next year's forecast
 next_year_forecast = filtered_data[filtered_data['Year'] == next_year].groupby(['Year', 'Month']).agg({'Forecast Qty': 'sum'}).reset_index()
@@ -158,14 +148,16 @@ total_col3.markdown(f'<div class="total-box"><div class="total-label">Forecast V
 total_col4.markdown(f'<div class="total-box"><div class="total-label">Next Year Total Forecast</div>{next_year_total_forecast_formatted}</div>', unsafe_allow_html=True)
 total_col5.markdown(f'<div class="total-box"><div class="total-label">SO Quantity Growth</div>{so_quantity_growth_formatted}</div>', unsafe_allow_html=True)
 
-st.title('')
+st.divider()
 
-#left_column, right_column = st.columns([1,2])   
+left_column, right_column = st.columns(2)   
 
 # create an editable dataframe
 combined_df.drop(columns = ['This Year SO Quantity','Last Year SO Quantity'], inplace = True)
-combined_df_editable = st.data_editor(combined_df.T)
+combined_df_editable = left_column.data_editor(combined_df.T)
 ombined_df_reposed = combined_df_editable.T.reset_index()
+
+new_forecast = right_column.write('Instructions:Try typing a new number in the Next Years Forecast Grid and watch the graph change.')
 
 # Create the line graph figure
 fig_updated = px.line(
@@ -178,7 +170,7 @@ fig_updated = px.line(
 # Add the lines for "This Year Forecast" and "Next Year Forecast"
 fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantity['This Year SO Quantity'], mode='lines', name='This Year SO Quantity', line=dict(color='#2f4359'))
 fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['Last Year SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='#949598'))
-fig_updated.add_scatter(x=next_year_prophet['Month'], y=next_year_prophet['yhat'], mode='lines', name='Prophet', line=dict(color='yellow'))
+fig_updated.add_scatter(x=next_year_prophet['Month'], y=next_year_prophet['yhat'], mode='lines', name='Prophet', line=dict(color='pink'))
 
 fig_updated.update_xaxes(title_text="Month Number", showgrid=True, dtick=True)
 fig_updated.update_yaxes(title_text="Unit Quantity")
