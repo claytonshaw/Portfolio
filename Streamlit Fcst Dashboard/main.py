@@ -25,7 +25,7 @@ df['Year'] = df['Ship Date'].dt.year
 df['Month'] = df['Ship Date'].dt.month
 
 st.sidebar.header("Filters")
-selected_account_manager = st.sidebar.selectbox("Select Account Manager", ["All"] + list(df['Account Manager'].unique()))
+selected_account_manager = st.sidebar.selectbox("Select Account Manager", ["All"] + list(sorted(df['Account Manager'].unique())))
 
 # Filter "Parent" options based on the selected "Account Manager"
 if selected_account_manager == "All":
@@ -160,18 +160,18 @@ total_col5.markdown(f'<div class="total-box"><div class="total-label">SO Quantit
 
 st.title('')
 
-left_column, right_column = st.columns([1,2])   
+#left_column, right_column = st.columns([1,2])   
 
 # create an editable dataframe
 combined_df.drop(columns = ['This Year SO Quantity','Last Year SO Quantity'], inplace = True)
-combined_df_editable = left_column.data_editor(combined_df, hide_index=True, disabled=('This Year Forecast'))
+combined_df_editable = st.data_editor(combined_df.T)
+ombined_df_reposed = combined_df_editable.T.reset_index()
 
 # Create the line graph figure
 fig_updated = px.line(
-    combined_df_editable,
+    ombined_df_reposed,
     x='Month',
     y=['This Year Forecast','Next Year Forecast'],
-    width = 900,
     color_discrete_map={'This Year Forecast':'#cc5628', 'Next Year Forecast':'red'}
 )
 
@@ -180,16 +180,16 @@ fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantit
 fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['Last Year SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='#949598'))
 fig_updated.add_scatter(x=next_year_prophet['Month'], y=next_year_prophet['yhat'], mode='lines', name='Prophet', line=dict(color='yellow'))
 
-fig_updated.update_xaxes(title_text="Month Number", showgrid=True)
+fig_updated.update_xaxes(title_text="Month Number", showgrid=True, dtick=True)
 fig_updated.update_yaxes(title_text="Unit Quantity")
 fig_updated.update_layout(legend = dict(
     orientation='h',
     yanchor='bottom',
     y=1.07,
     xanchor='right',
-    x=0.8),
+    x=0.7),
     legend_title = ''
 )
 
 # Display the updated line graph
-right_column.plotly_chart(fig_updated)
+st.plotly_chart(fig_updated, use_container_width=True)
