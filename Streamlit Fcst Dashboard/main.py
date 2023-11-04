@@ -24,15 +24,28 @@ df['Ship Date'] = pd.to_datetime(df['Ship Date'])
 df['Year'] = df['Ship Date'].dt.year
 df['Month'] = df['Ship Date'].dt.month
 
-# Display the filters as dropdowns
 st.sidebar.header("Filters")
 selected_account_manager = st.sidebar.selectbox("Select Account Manager", ["All"] + list(df['Account Manager'].unique()))
-selected_parent = st.sidebar.selectbox("Select Parent", ["All"] + list(df['Parent'].unique()))
 
-# Sort and display the 'Item' filter in ascending order
-item_values = list(df['Item'].unique())
-item_values.sort()  # Sort the item values
-selected_item = st.sidebar.selectbox("Select Item", ["All"] + item_values)
+# Filter "Parent" options based on the selected "Account Manager"
+if selected_account_manager == "All":
+    unique_parents = ["All"] + sorted(df['Parent'].unique().tolist())
+else:
+    unique_parents = ["All"] + sorted(df[df['Account Manager'] == selected_account_manager]['Parent'].unique().tolist())
+
+selected_parent = st.sidebar.selectbox("Select Parent", unique_parents)
+
+# Filter "Item" options based on the selected "Account Manager" and "Parent"
+if selected_account_manager == "All" and selected_parent == "All":
+    unique_items = ["All"] + sorted(df['Item'].unique().tolist())
+elif selected_account_manager == "All":
+    unique_items = ["All"] + sorted(df[df['Parent'] == selected_parent]['Item'].unique().tolist())
+elif selected_parent == "All":
+    unique_items = ["All"] + sorted(df[df['Account Manager'] == selected_account_manager]['Item'].unique().tolist())
+else:
+    unique_items = ["All"] + sorted(df[(df['Account Manager'] == selected_account_manager) & (df['Parent'] == selected_parent)]['Item'].unique().tolist())
+
+selected_item = st.sidebar.selectbox("Select Item", unique_items)
 
 # Apply filters to the data
 filtered_data = df.copy()
