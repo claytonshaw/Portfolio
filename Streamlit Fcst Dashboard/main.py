@@ -180,7 +180,7 @@ fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=this_year_so_quantit
 fig_updated.add_scatter(x=this_year_so_quantity['Month'], y=last_year_so_quantity['Last Year SO Quantity'], mode='lines', name='Last Year SO Quantity', line=dict(color='#949598'))
 fig_updated.add_scatter(x=next_year_prophet['Month'], y=next_year_prophet['yhat'], mode='lines', name='Prophet', line=dict(color='yellow'))
 
-fig_updated.update_xaxes(title_text="Month Number")
+fig_updated.update_xaxes(title_text="Month Number", showgrid=True)
 fig_updated.update_yaxes(title_text="Unit Quantity")
 fig_updated.update_layout(legend = dict(
     orientation='h',
@@ -188,7 +188,7 @@ fig_updated.update_layout(legend = dict(
     y=1.07,
     xanchor='right',
     x=0.8),
-    legend_title = ''    
+    legend_title = ''
 )
 
 # Display the updated line graph
