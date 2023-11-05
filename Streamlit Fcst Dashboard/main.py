@@ -22,6 +22,7 @@ df = load_data()
 
 # DATES AND RANGES
 current_year = date.today().year
+current_month = date.today().month
 next_year = current_year + 1
 last_year = current_year - 1
 today = pd.to_datetime(date.today())
@@ -116,11 +117,9 @@ last_year_so_qty_df = filtered_data[filtered_data['Year'] == last_year].groupby(
 last_year_so_qty_df['Forecast Qty'] = 0
 last_year_so_qty_df.rename(columns = {'SO Quantity': 'Last Year SO Quantity'}, inplace = True)
 
-# Concatenate the DataFrames for current year, next year, and previous years
+# Concatenate the DataFrames for current year, next year
 combined_df = pd.DataFrame()
 combined_df['Month'] = this_year_forecast_df['Month']
-combined_df['This Year SO Quantity'] = this_year_so_qty_df['This Year SO Quantity'].astype(int)
-combined_df['Last Year SO Quantity'] = last_year_so_qty_df['Last Year SO Quantity'].astype(int)
 combined_df['This Year Forecast'] = this_year_forecast_df['This Year Forecast'].astype(int)
 combined_df['Next Year Forecast'] = next_year_forecast_df['Next Year Forecast'].astype(int)
 
@@ -130,8 +129,7 @@ combined_df['Next Year Forecast'] = next_year_forecast_df['Next Year Forecast'].
 left_column, right_column = st.columns([3,1])   
 
 # create an editable dataframe
-combined_df.drop(columns = ['This Year SO Quantity','Last Year SO Quantity','This Year Forecast'], inplace = True)
-combined_df_editable = left_column.data_editor(combined_df.T)
+combined_df_editable = left_column.data_editor(combined_df.T, num_rows='fixed')
 combined_df_reposed = combined_df_editable.T.reset_index()
 
 # Calculate Next Year Total Forecast Qty
