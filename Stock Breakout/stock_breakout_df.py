@@ -16,7 +16,7 @@ sym3 = set( symbol for symbol in df3[0].values.tolist() )
 sym4 = set( symbol for symbol in df4[0].values.tolist() )
 
 # join the 4 sets into one. Because it's a set, there will be no duplicate symbols
-symbols = set.union( sym1)
+symbols = set.union(sym1, sym2)
 
 # Some stocks are 5 characters. Those stocks with the suffixes listed below are not of interest.
 my_list = ['W', 'R', 'P', 'Q']
