@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from yahoo_fin import stock_info as si
 
 def breakout_profitability(ticker, dollars):
     '''A function that returns a histogram and probabilistic information for all breakouts of a stock using its historical daily prices'''
@@ -124,13 +123,14 @@ def breakout_profitability(ticker, dollars):
         if latest_breaktout == today_date:
             supplementary_info = f"Additional Info: The first breakout for {ticker} was observed on {earliest_breakout} while the most recent breakout was on {latest_breaktout}. The holding period for each breakout trade is maximum of 10 days."        
             print(supplementary_info)
-                # VISUALIZE DISTRIBUTION OF PROFITS
-            sns.histplot(pd.Series(profits), bins=20)
-            plt.title(f"Distribution of Breakout Profits for {ticker.upper()}")
-            plt.text(0.95, 0.95, f"Total Breakouts: {len(profits)} \n Ave. Positive Profit: {ave_positive_profit}% \n Ave. Negative Profit: {ave_negative_profit}% \n Win Rate: {win_rate}% \n Loss Rate: {loss_rate}% \n Breakeven Rate: {breakeven_rate}% \n EV: {ev}%", 
-                    ha='right', va='top', transform=plt.gca().transAxes)
-            plt.ylabel('Number of Breakouts')
-            plt.xlabel('Profit (%)')
-            plt.show()
+            print(ev)
+            # # VISUALIZE DISTRIBUTION OF PROFITS
+            # sns.histplot(pd.Series(profits), bins=20)
+            # plt.title(f"Distribution of Breakout Profits for {ticker.upper()}")
+            # plt.text(0.95, 0.95, f"Total Breakouts: {len(profits)} \n Ave. Positive Profit: {ave_positive_profit}% \n Ave. Negative Profit: {ave_negative_profit}% \n Win Rate: {win_rate}% \n Loss Rate: {loss_rate}% \n Breakeven Rate: {breakeven_rate}% \n EV: {ev}%", 
+            #         ha='right', va='top', transform=plt.gca().transAxes)
+            # plt.ylabel('Number of Breakouts')
+            # plt.xlabel('Profit (%)')
+            # plt.show()
     except UnboundLocalError:
         pass
