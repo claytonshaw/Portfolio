@@ -126,5 +126,7 @@ def breakout_profitability(ticker, dollars):
             # plt.ylabel('Number of Breakouts')
             # plt.xlabel('Profit (%)')
             # plt.show()
+        else:
+            pass
     except (ValueError, UnboundLocalError):
         pass
