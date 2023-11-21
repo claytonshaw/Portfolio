@@ -9,13 +9,13 @@ df3 = pd.DataFrame(si.tickers_dow())
 df4 = pd.DataFrame(si.tickers_other())
 
 # convert DataFrame to list, then to sets
-sym1 = set(symbol for symbol in df1[0].values.tolist())
-sym2 = set(symbol for symbol in df2[0].values.tolist())
-sym3 = set(symbol for symbol in df3[0].values.tolist())
-sym4 = set(symbol for symbol in df4[0].values.tolist())
+sym1 = set( symbol for symbol in df1[0].values.tolist() )
+sym2 = set( symbol for symbol in df2[0].values.tolist() )
+sym3 = set( symbol for symbol in df3[0].values.tolist() )
+sym4 = set( symbol for symbol in df4[0].values.tolist() )
 
 # join the 4 sets into one. Because it's a set, there will be no duplicate symbols
-symbols = set.union(sym1, sym2, sym3)
+symbols = set.union(sym1)
 
 # Some stocks are 5 characters. Those stocks with the suffixes listed below are not of interest.
 my_list = ['W', 'R', 'P', 'Q']
@@ -30,7 +30,6 @@ for symbol in symbols:
 
 print( f'Removed {len( del_set )} unqualified stock symbols...' )
 print( f'There are {len( sav_set )} qualified stock symbols...' )
-
 
 for i in sav_set:
     breakout_profitability(i, dollars = 1000)
