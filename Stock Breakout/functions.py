@@ -120,10 +120,12 @@ def breakout_profitability(ticker, dollars):
     except (ValueError, UnboundLocalError):
         pass
     try:
+        counter = 0
         if latest_breaktout == today_date:
             supplementary_info = f"Additional Info: The first breakout for {ticker} was observed on {earliest_breakout} while the most recent breakout was on {latest_breaktout}. The holding period for each breakout trade is maximum of 10 days."        
             print(supplementary_info)
             print(ev)
+            counter += 1
             # # VISUALIZE DISTRIBUTION OF PROFITS
             # sns.histplot(pd.Series(profits), bins=20)
             # plt.title(f"Distribution of Breakout Profits for {ticker.upper()}")
@@ -132,5 +134,7 @@ def breakout_profitability(ticker, dollars):
             # plt.ylabel('Number of Breakouts')
             # plt.xlabel('Profit (%)')
             # plt.show()
+        if counter == 0:
+            print("No Stocks have a breakout today.")
     except UnboundLocalError:
         pass
