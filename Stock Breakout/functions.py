@@ -10,7 +10,7 @@ def breakout_profitability(ticker, dollars):
     import numpy as np
     import seaborn as sns
     import matplotlib.pyplot as plt
-    from datetime import datetime
+    from datetime import datetime, timedelta
     
     ## PREPARE OUR DATAFRAME FOR ANALYSIS
     try:
@@ -41,7 +41,9 @@ def breakout_profitability(ticker, dollars):
                     'Volume-%-from-20D-Mean', 
                     ]]
         # Select the subset of dataframe where breakout conditions apply
-        # Conditions: 1. green candle, 2. candle's body is longest in 10 days, 
+        # Conditions: 
+        # 1. green candle, 
+        # 2. candle's body is longest in 10 days, 
         # 3. breakout volume is 50% higher than the rolling 20-day average, and
         # 4. breakout candle has body that is 100% higher than the rolling 20-day average
         condition = (prices['O-to-C'] > 0.0) & (prices['O-to-C'] == prices['MaxOC_Prev10']) & (prices['OC-%-from-20D-Mean'] >= 100.0) & (prices['SellingPressure']/prices['O-to-C'] <= 0.40) & (prices['Volume-%-from-20D-Mean'] >= 50.0)
@@ -114,7 +116,7 @@ def breakout_profitability(ticker, dollars):
     # Supply other information, in addition to the chart, for the output
     # NOTE: breakout_dates are in timestamp, so we have to convert to date format
     try:
-        curr_day = datetime.today().date()
+        curr_day = datetime.today().date() - timedelta(days=1)
         breakout_dates = pd.to_datetime(breakouts['date'])
         earliest_breakout = breakout_dates.min().strftime('%Y-%m-%d')
         latest_breaktout = breakout_dates.max().strftime('%Y-%m-%d')
