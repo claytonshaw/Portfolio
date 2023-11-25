@@ -120,7 +120,7 @@ def breakout_profitability(ticker, dollars):
         earliest_breakout = breakout_dates.min().strftime('%Y-%m-%d')
         latest_breaktout = breakout_dates.max().strftime('%Y-%m-%d')
         supplementary_info = f"Additional Info: The first breakout for {ticker} was observed on {earliest_breakout} while the most recent breakout was on {latest_breaktout}. The holding period for each breakout trade is maximum of 10 days. The EV is {ev}%"
-        if latest_breaktout == curr_day and ev > 0:
+        if latest_breaktout == curr_day:
             print(supplementary_info)
             # VISUALIZE DISTRIBUTION OF PROFITS
             sns.histplot(pd.Series(profits), bins=20)
