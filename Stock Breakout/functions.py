@@ -3,7 +3,6 @@ import numpy as np
 
 def breakout_profitability(ticker, dollars):
     '''A function that returns a histogram and probabilistic information for all breakouts of a stock using its historical daily prices'''
-    
     # Import libraries
     from yahoo_fin.stock_info import get_data
     import pandas as pd
@@ -116,12 +115,12 @@ def breakout_profitability(ticker, dollars):
     # Supply other information, in addition to the chart, for the output
     # NOTE: breakout_dates are in timestamp, so we have to convert to date format
     try:
-        curr_day = datetime.today().date() - timedelta(days=1)
+        curr_day = pd.to_datetime(datetime.today().date() - timedelta(days=1)).strftime('%Y-%m-%d')
         breakout_dates = pd.to_datetime(breakouts['date'])
         earliest_breakout = breakout_dates.min().strftime('%Y-%m-%d')
         latest_breaktout = breakout_dates.max().strftime('%Y-%m-%d')
         supplementary_info = f"Additional Info: The first breakout for {ticker} was observed on {earliest_breakout} while the most recent breakout was on {latest_breaktout}. The holding period for each breakout trade is maximum of 10 days. The EV is {ev}%"
-        if breakout_dates == curr_day:
+        if latest_breaktout == curr_day:
             print(supplementary_info)
             # VISUALIZE DISTRIBUTION OF PROFITS
             sns.histplot(pd.Series(profits), bins=20)
