@@ -1,4 +1,4 @@
-from functions import breakout_profitability
+from functions import breakout_profitability, saveResults
 from yahoo_fin import stock_info as si
 import pandas as pd
 
@@ -16,6 +16,7 @@ sym4 = set(symbol for symbol in df4[0].values.tolist())
 
 # join the 4 sets into one. Because it's a set, there will be no duplicate symbols
 symbols = set.union(sym1, sym2, sym3)
+#symbols = set.union(sym1)
 
 # Some stocks are 5 characters. Those stocks with the suffixes listed below are not of interest.
 my_list = ['W', 'R', 'P', 'Q']
@@ -31,6 +32,23 @@ for symbol in symbols:
 print( f'Removed {len( del_set )} unqualified stock symbols...' )
 print( f'There are {len( sav_set )} qualified stock symbols...' )
 
+results = {}
 
-for i in sav_set:
-    breakout_profitability(i, 1000)
+for stock in sav_set:
+    try:
+        stock_info = {}
+        eb, wr, br, lr, app, anp, ev, tb = breakout_profitability(stock, 1000)
+        stock_info['earliest_breakout'] = eb
+        stock_info['total_breakouts'] = tb
+        stock_info['breakeven_rate'] = f'{br}%'
+        stock_info['win_rate'] = f'{wr}%'
+        stock_info['loss_rate'] = f'{lr}%'
+        stock_info['ave_positive_profit'] = f'{app}%'
+        stock_info['ave_negative_profit'] = f'{anp}%'
+        stock_info['ev'] = f'{ev}%'
+
+        results[f'Ticker: {stock}'] = stock_info
+    except TypeError:
+        pass
+
+saveResults(results)
