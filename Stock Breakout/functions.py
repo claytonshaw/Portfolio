@@ -1,12 +1,9 @@
-import pandas as pd
-import numpy as np
-
+# breakout function
 def breakout_profitability(ticker, dollars):
     '''A function that returns a histogram and probabilistic information for all breakouts of a stock using its historical daily prices'''
     # Import libraries
     from yahoo_fin.stock_info import get_data
     import pandas as pd
-    import numpy as np
     import seaborn as sns
     import matplotlib.pyplot as plt
     from datetime import datetime, timedelta
@@ -109,7 +106,8 @@ def breakout_profitability(ticker, dollars):
         ave_negative_profit = round(sum(losses)/len(losses), 2)
         num1 = (ave_positive_profit/100) * dollars * (win_rate/100)
         num2 = abs((ave_negative_profit/100) * dollars * (loss_rate/100))
-        ev = round(((num1 - num2)/dollars) * 100, 2)
+        expectancy_value = round(((num1 - num2)/dollars) * 100, 2)
+        total_breakouts = len(profits)
     except (ZeroDivisionError, UnboundLocalError):
         pass
     # Supply other information, in addition to the chart, for the output
@@ -119,18 +117,29 @@ def breakout_profitability(ticker, dollars):
         breakout_dates = pd.to_datetime(breakouts['date'])
         earliest_breakout = breakout_dates.min().strftime('%Y-%m-%d')
         latest_breaktout = breakout_dates.max().strftime('%Y-%m-%d')
-        supplementary_info = f"Additional Info: The first breakout for {ticker} was observed on {earliest_breakout} while the most recent breakout was on {latest_breaktout}. The holding period for each breakout trade is maximum of 10 days. The EV is {ev}%"
         if latest_breaktout == curr_day:
-            print(supplementary_info)
-            # VISUALIZE DISTRIBUTION OF PROFITS
-            sns.histplot(pd.Series(profits), bins=20)
-            plt.title(f"Distribution of Breakout Profits for {ticker.upper()}")
-            plt.text(0.95, 0.95, f"Total Breakouts: {len(profits)} \n Ave. Positive Profit: {ave_positive_profit}% \n Ave. Negative Profit: {ave_negative_profit}% \n Win Rate: {win_rate}% \n Loss Rate: {loss_rate}% \n Breakeven Rate: {breakeven_rate}% \n EV: {ev}%", 
-                    ha='right', va='top', transform=plt.gca().transAxes)
-            plt.ylabel('Number of Breakouts')
-            plt.xlabel('Profit (%)')
-            plt.show()
+            print(earliest_breakout, win_rate, breakeven_rate, loss_rate, ave_positive_profit, ave_negative_profit, expectancy_value)
+            return earliest_breakout, win_rate, breakeven_rate, loss_rate, ave_positive_profit, ave_negative_profit, expectancy_value, total_breakouts
+            # # VISUALIZE DISTRIBUTION OF PROFITS
+            # sns.histplot(pd.Series(profits), bins=20)
+            # plt.title(f"Distribution of Breakout Profits for {ticker.upper()}")
+            # plt.text(0.95, 0.95, f"Total Breakouts: {len(profits)} \n Ave. Positive Profit: {ave_positive_profit}% \n Ave. Negative Profit: {ave_negative_profit}% \n Win Rate: {win_rate}% \n Loss Rate: {loss_rate}% \n Breakeven Rate: {breakeven_rate}% \n EV: {ev}%", 
+            #         ha='right', va='top', transform=plt.gca().transAxes)
+            # plt.ylabel('Number of Breakouts')
+            # plt.xlabel('Profit (%)')
+            # plt.show()
         else:
             pass
     except (ValueError, UnboundLocalError):
         pass
+
+# function to dump results in a json file
+def saveResults(results):
+    from datetime import datetime
+    import pandas as pd
+    import json
+    curr_day = pd.to_datetime(datetime.today().date()).strftime('%Y-%m-%d')
+    file_name = f'results_{curr_day}'
+    json.dump(results, open(f'C:/Users/clata/OneDrive/Desktop/python/work/stock breakout/results/{file_name}','w'), indent = 4)
+    return
+
