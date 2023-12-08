@@ -7,13 +7,25 @@
 #importing required libraries
 import pandas as pd
 import numpy as np
-import openpyxl
-from openpyxl import load_workbook
-from openpyxl.formula import Tokenizer
-from openpyxl.formula.translate import Translator
+
+file_path = "Supplemental Order Data.xlsx"
+
+# function that will dynamically count the number of blank rows
+def blank_rows(file_path):
+    # Read the first column of the Excel sheet to find blank rows
+    first_column = pd.read_excel(file_path, usecols=[0]).iloc[:, 0]
+
+    # Find the number of consecutive blank rows at the beginning
+    blank_rows = 1
+    for value in first_column:
+        if pd.isnull(value):
+            blank_rows += 1
+        else:
+            break
+    return blank_rows
 
 # import necessary files
-df = pd.read_excel(r"Supplemental Order Data.xlsx", skiprows=24)
+df = pd.read_excel(file_path, skiprows=blank_rows(file_path))
 available_inventory = pd.read_csv(r"Available Inventory.csv")
 
 # getting the unique list of SKU's and saving it to dataframe
@@ -27,9 +39,9 @@ df['pipe_minus_fcst'] = df['pipe_minus_fcst'].abs() # getting absolute value of 
 df['whse_pks_needed'] = df['pipe_minus_fcst'] / df['VNPK Qty'] # converting to vendor packs
 df['whse_pks_needed'] = df['whse_pks_needed'].apply(np.ceil) # rounding up to the nearest whole number
 df['pipe_need'] = df['whse_pks_needed'] * df['VNPK Qty'] # converting back to units
-df['mx_shelf_minus_pipeline'] = df.apply(lambda row: 0 if row['Max Shelf Qty'] - row['PIPELINE'] < 0 else row['Max Shelf Qty'] - row['PIPELINE'], axis=1) # new line
+df['mx_shelf_minus_pipeline'] = df.apply(lambda row: 0 if row['Max Shelf Qty'] - row['PIPELINE'] < 0 else row['Max Shelf Qty'] - row['PIPELINE'], axis=1) # if max shelf qty minus pipe is les than 0 make it zero other wise make it the difference between max shelf and the pipe
 df['pipe_need'] = df.apply(lambda row: row['Max Shelf Qty'] if row['pipe_need'] > row['Max Shelf Qty'] else row['pipe_need'], axis=1) # if the max shelf qty is less than the needed amount just make it max shelf qty
-df['pipe_need'] = df.apply(lambda row: row['mx_shelf_minus_pipeline'] if (row['6_wk_fcst'] == 0 or row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) #new line
+df['pipe_need'] = df.apply(lambda row: row['mx_shelf_minus_pipeline'] if (row['6_wk_fcst'] == 0 or row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) # if the store's forecast and on hand is zero make the units need max shelf minus pipeline
 df['pipe_need'] = df['pipe_need'] / df['VNPK Qty'] # converting to vendor packs
 df['pipe_need'] = df['pipe_need'].apply(np.ceil) # rounding up to the nearest whole number
 
@@ -37,13 +49,16 @@ sto_single = pd.DataFrame()
 
 for item in unique_sku:
     df_filtered = df[df['Vendor Stk Nbr'] == item]
+    #df_filtered = df[df['Vendor Stk Nbr'] == 5225]
     df_filtered = df_filtered[df_filtered['Curr Valid Store/Item Comb.'] == 1] # filtering out not valid stores
     df_filtered = df_filtered[df_filtered['Store Type Descr'] != 'BASE STR Nghbrhd Mkt'] # filtering out Neighborhood Market stores
     df_filtered = df_filtered.sort_values('pipe_need', ascending=False).reset_index() # sorting to rank stores with the highest pipe_need
 
     # getting available inventory 
     blkst_oh = available_inventory[available_inventory['Item'] == str(item)]
-    available_inv = blkst_oh.iloc[0][7]
+    #blkst_oh = available_inventory[available_inventory['Item'] == str(5225)]
+    #available_inv = blkst_oh.iloc[0][7] / blkst_oh.iloc[0][9] # uses available - split pack (converts to vendor packs)
+    available_inv = float(blkst_oh.iloc[0][2]) / float(blkst_oh.iloc[0][9]) # uses on hand inventory (converts to vendor packs)
 
     #reducing available inventory for shared items
     shared_items = [1528,4114,5017,5091,5249,5471]
@@ -51,6 +66,10 @@ for item in unique_sku:
         available_inv *= 0.5
     else:
         available_inv
+
+    # zero inventory alert
+    if available_inv < 0:
+        print(f"{item} has no inventory")
 
     # calculating rolling sum
     df_filtered['units_sent_dc'] = 0
@@ -79,10 +98,21 @@ for item in unique_sku:
         sto_single = sto_single.append(df_filtered[dc_columns])
     except ValueError:
         pass
-    
+
     # dropping rows where BLKST isn't sending anything
     sto_single = sto_single.loc[sto_single['units_sent_dc'] != 0]
 
 # exporting data to new files
 df_filtered.to_excel(r"Supplemental Order TESTER.xlsx")
 sto_single.to_excel(r"sto_single_.xlsx")
+
+# printing total units sent and number of stores by item
+sum_by_item = sto_single.groupby('Vendor Stk Nbr')['units_sent_dc'].sum()
+store_count_by_item = sto_single.groupby('Vendor Stk Nbr')['units_sent_dc'].count()
+
+result_df = pd.DataFrame({
+    'Total VNPK Sent': sum_by_item,
+    'Number of Stores': store_count_by_item
+})
+result_df = result_df.sort_values(by='Total VNPK Sent', ascending=False)
+print(result_df)
