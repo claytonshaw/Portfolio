@@ -49,14 +49,12 @@ sto_single = pd.DataFrame()
 
 for item in unique_sku:
     df_filtered = df[df['Vendor Stk Nbr'] == item]
-    #df_filtered = df[df['Vendor Stk Nbr'] == 5225]
-    df_filtered = df_filtered[df_filtered['Curr Valid Store/Item Comb.'] == 1] # filtering out not valid stores
+    df_filtered = df_filtered[df_filtered['Curr Valid Store/Item Comb.'] == 1] # filtering to only valid stores
     df_filtered = df_filtered[df_filtered['Store Type Descr'] != 'BASE STR Nghbrhd Mkt'] # filtering out Neighborhood Market stores
     df_filtered = df_filtered.sort_values('pipe_need', ascending=False).reset_index() # sorting to rank stores with the highest pipe_need
 
     # getting available inventory 
     blkst_oh = available_inventory[available_inventory['Item'] == str(item)]
-    #blkst_oh = available_inventory[available_inventory['Item'] == str(5225)]
     #available_inv = blkst_oh.iloc[0][7] / blkst_oh.iloc[0][9] # uses available - split pack (converts to vendor packs)
     available_inv = float(blkst_oh.iloc[0][2]) / float(blkst_oh.iloc[0][9]) # uses on hand inventory (converts to vendor packs)
 
