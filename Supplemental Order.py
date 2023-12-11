@@ -26,10 +26,15 @@ def blank_rows(file_path):
 
 # import necessary files
 df = pd.read_excel(file_path, skiprows=blank_rows(file_path))
-available_inventory = pd.read_csv(r"Available Inventory.csv")
+available_inventory = pd.read_excel(r"Available Inventory.xlsx") # this dataset gets updated from domo
+#available_inventory = pd.read_csv(r"Available Inventory 1.csv") # use this dataset if you want to customize the on hand
 
 # getting the unique list of SKU's and saving it to dataframe
 unique_sku = df['Vendor Stk Nbr'].unique()
+
+# list of parameters
+use_custom_vendor_packs = True # switch this to False to use Max Shelf Qty as the cut off
+vendor_packs_to_send = 1 # number of vendor packs to send to stores
 
 # creating units needed calculation
 df['6_wk_fcst'] = df.iloc[:,16:22].sum(axis=1) # summing each weeks forecast to get a total 6 week forecast
@@ -38,13 +43,16 @@ df['pipe_minus_fcst'] = df.apply(lambda row: 0 if row['pipe_minus_fcst'] > 0 els
 df['pipe_minus_fcst'] = df['pipe_minus_fcst'].abs() # getting absolute value of number
 df['whse_pks_needed'] = df['pipe_minus_fcst'] / df['VNPK Qty'] # converting to vendor packs
 df['whse_pks_needed'] = df['whse_pks_needed'].apply(np.ceil) # rounding up to the nearest whole number
-df['pipe_need'] = df['whse_pks_needed'] * df['VNPK Qty'] # converting back to units
-df['mx_shelf_minus_pipeline'] = df.apply(lambda row: 0 if row['Max Shelf Qty'] - row['PIPELINE'] < 0 else row['Max Shelf Qty'] - row['PIPELINE'], axis=1) # if max shelf qty minus pipe is les than 0 make it zero other wise make it the difference between max shelf and the pipe
-df['pipe_need'] = df.apply(lambda row: row['Max Shelf Qty'] if row['pipe_need'] > row['Max Shelf Qty'] else row['pipe_need'], axis=1) # if the max shelf qty is less than the needed amount just make it max shelf qty
-df['pipe_need'] = df.apply(lambda row: row['mx_shelf_minus_pipeline'] if (row['6_wk_fcst'] == 0 or row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) # if the store's forecast and on hand is zero make the units need max shelf minus pipeline
-df['pipe_need'] = df['pipe_need'] / df['VNPK Qty'] # converting to vendor packs
-df['pipe_need'] = df['pipe_need'].apply(np.ceil) # rounding up to the nearest whole number
-
+if use_custom_vendor_packs:
+    df['pipe_need'] = df.apply(lambda row: vendor_packs_to_send if row['whse_pks_needed'] > vendor_packs_to_send else row['whse_pks_needed'], axis=1)
+else:
+    df['pipe_need'] = df['whse_pks_needed'] * df['VNPK Qty'] # converting back to units
+    df['mx_shelf_minus_pipeline'] = df.apply(lambda row: 0 if row['Max Shelf Qty'] - row['PIPELINE'] < 0 else row['Max Shelf Qty'] - row['PIPELINE'], axis=1) # if max shelf qty minus pipe is les than 0 make it zero other wise make it the difference between max shelf and the pipe
+    df['pipe_need'] = df.apply(lambda row: row['Max Shelf Qty'] if row['pipe_need'] > row['Max Shelf Qty'] else row['pipe_need'], axis=1) # if the max shelf qty is less than the needed amount just make it max shelf qty
+    df['pipe_need'] = df.apply(lambda row: row['mx_shelf_minus_pipeline'] if (row['6_wk_fcst'] == 0 or row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) # if the store's forecast and on hand is zero make the units need max shelf minus pipeline
+    df['pipe_need'] = df['pipe_need'] / df['VNPK Qty'] # converting to vendor packs
+    df['pipe_need'] = df['pipe_need'].apply(np.ceil) # rounding up to the nearest whole number
+print(df)
 sto_single = pd.DataFrame()
 
 for item in unique_sku:
@@ -54,7 +62,7 @@ for item in unique_sku:
     df_filtered = df_filtered.sort_values('pipe_need', ascending=False).reset_index() # sorting to rank stores with the highest pipe_need
 
     # getting available inventory 
-    blkst_oh = available_inventory[available_inventory['Item'] == str(item)]
+    blkst_oh = available_inventory[available_inventory['Item'] == item]
     #available_inv = blkst_oh.iloc[0][7] / blkst_oh.iloc[0][9] # uses available - split pack (converts to vendor packs)
     available_inv = float(blkst_oh.iloc[0][2]) / float(blkst_oh.iloc[0][9]) # uses on hand inventory (converts to vendor packs)
 
