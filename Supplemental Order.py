@@ -78,27 +78,27 @@ for item in unique_sku:
         print(f"{item} has no inventory")
 
     # calculating rolling sum
-    df_filtered['units_sent_dc'] = 0
+    df_filtered['vnpks_sent_dc'] = 0
 
     for i in range(len(df_filtered)):
         try:
             if df_filtered['pipe_need'][i] > available_inv:
-                df_filtered['units_sent_dc'][i] = 0
+                df_filtered['vnpks_sent_dc'][i] = 0
             elif df_filtered['pipe_need'][i] < available_inv:
-                df_filtered['units_sent_dc'][i] = df_filtered['pipe_need'][i]
+                df_filtered['vnpks_sent_dc'][i] = df_filtered['pipe_need'][i]
                 available_inv -= df_filtered['pipe_need'][i]
         except KeyError:
             pass
 
     # sorting the dataframe to put units sent at the top
-    df_filtered = df_filtered.sort_values(['units_sent_dc'],ascending=False)
+    df_filtered = df_filtered.sort_values(['vnpks_sent_dc'],ascending=False)
 
     # Dropping rows that where BLKST isn't sending anything. 
-    condition1 = (df_filtered['units_sent_dc'] == 0) 
+    condition1 = (df_filtered['vnpks_sent_dc'] == 0) 
     df_filtered = df_filtered[~(condition1)]
 
     # selecting columns to keep
-    dc_columns = ['Prime Item Nbr', 'Vendor Stk Nbr','Store Nbr','units_sent_dc']
+    dc_columns = ['Prime Item Nbr', 'Vendor Stk Nbr','Store Nbr','vnpks_sent_dc']
 
     try:
         sto_single = sto_single.append(df_filtered[dc_columns])
@@ -106,15 +106,15 @@ for item in unique_sku:
         pass
 
     # dropping rows where BLKST isn't sending anything
-    sto_single = sto_single.loc[sto_single['units_sent_dc'] != 0]
+    sto_single = sto_single.loc[sto_single['vnpks_sent_dc'] != 0]
 
 # exporting data to new files
 df_filtered.to_excel(r"Supplemental Order TESTER.xlsx")
 sto_single.to_excel(r"sto_single_.xlsx")
 
 # printing total units sent and number of stores by item
-sum_by_item = sto_single.groupby('Vendor Stk Nbr')['units_sent_dc'].sum()
-store_count_by_item = sto_single.groupby('Vendor Stk Nbr')['units_sent_dc'].count()
+sum_by_item = sto_single.groupby('Vendor Stk Nbr')['vnpks_sent_dc'].sum()
+store_count_by_item = sto_single.groupby('Vendor Stk Nbr')['vnpks_sent_dc'].count()
 
 result_df = pd.DataFrame({
     'Total VNPK Sent': sum_by_item,
