@@ -26,9 +26,9 @@ def blank_rows(file_path):
 
 # import necessary files
 df = pd.read_excel(file_path, skiprows=blank_rows(file_path))
-available_inventory = pd.read_excel(r"Available Inventory.xlsx") # this dataset gets updated from domo
+available_inventory = pd.read_excel(r"Available Inventory.xlsx", skiprows=1) # this dataset gets updated from domo
 #available_inventory = pd.read_csv(r"Available Inventory 1.csv") # use this dataset if you want to customize the on hand
-
+print(available_inventory)
 # getting the unique list of SKU's and saving it to dataframe
 unique_sku = df['Vendor Stk Nbr'].unique()
 
