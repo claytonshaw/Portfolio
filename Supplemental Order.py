@@ -13,6 +13,7 @@ use_custom_vendor_packs = True # switch this to False to use Max Shelf Qty as th
 send_to_zero_oh_and_fcst_stores = True # this only changes if using customer vendor packs
 vendor_packs_to_send = 1 # number of vendor packs to send to stores
 use_available = True # use either on hand or the available inventory
+sort_by_zero_oh = True # if true we will target stores that have zero on hand first
 
 # path to data
 file_path = "Supplemental Order Data.xlsx"
@@ -65,7 +66,10 @@ for item in unique_sku:
     df_filtered = df[df['Vendor Stk Nbr'] == item]
     df_filtered = df_filtered[df_filtered['Curr Valid Store/Item Comb.'] == 1] # filtering to only valid stores
     df_filtered = df_filtered[df_filtered['Store Type Descr'] != 'BASE STR Nghbrhd Mkt'] # filtering out Neighborhood Market stores
-    df_filtered = df_filtered.sort_values('pipe_need', ascending=False).reset_index() # sorting to rank stores with the highest pipe_need
+    if sort_by_zero_oh:
+        df_filtered = df_filtered.sort_values(by = ['Curr Str On Hand Qty', 'pipe_need'], ascending=[False, False]).reset_index() # sort by stores that have zero on hand and pipe need
+    else:
+        df_filtered = df_filtered.sort_values('pipe_need', ascending=False).reset_index() # sorting to rank stores with the highest pipe_need
 
     # getting available inventory 
     blkst_oh = available_inventory[available_inventory['Item'] == item]
