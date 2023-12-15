@@ -1,4 +1,4 @@
-from functions import breakout_profitability, saveResults, count_nested_dicts
+from functions import breakout_profitability, saveResults, count_all_values
 from yahoo_fin import stock_info as si
 import pandas as pd
 
@@ -53,4 +53,4 @@ for stock in sav_set:
 
 saveResults(results)
 
-count_nested_dicts(results)
+count_all_values(results)
