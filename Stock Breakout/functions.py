@@ -1,11 +1,9 @@
 # breakout function
-def breakout_profitability(ticker, dollars):
+def breakout_profitability(ticker, dollars, ev):
     '''A function that returns a histogram and probabilistic information for all breakouts of a stock using its historical daily prices'''
     # Import libraries
     from yahoo_fin.stock_info import get_data
     import pandas as pd
-    import seaborn as sns
-    import matplotlib.pyplot as plt
     from datetime import datetime, timedelta
     
     ## PREPARE OUR DATAFRAME FOR ANALYSIS
@@ -110,24 +108,15 @@ def breakout_profitability(ticker, dollars):
         total_breakouts = len(profits)
     except (ZeroDivisionError, UnboundLocalError):
         pass
-    # Supply other information, in addition to the chart, for the output
     # NOTE: breakout_dates are in timestamp, so we have to convert to date format
     try:
         curr_day = pd.to_datetime(datetime.today().date() - timedelta(days=1)).strftime('%Y-%m-%d')
         breakout_dates = pd.to_datetime(breakouts['date'])
         earliest_breakout = breakout_dates.min().strftime('%Y-%m-%d')
         latest_breaktout = breakout_dates.max().strftime('%Y-%m-%d')
-        if latest_breaktout == curr_day:
+        if (latest_breaktout == curr_day) and (expectancy_value > ev): # I only want to see the breakouts that happened yesterday and have had an EV higher than what you type in
             print(earliest_breakout, win_rate, breakeven_rate, loss_rate, ave_positive_profit, ave_negative_profit, expectancy_value)
             return earliest_breakout, win_rate, breakeven_rate, loss_rate, ave_positive_profit, ave_negative_profit, expectancy_value, total_breakouts
-            # # VISUALIZE DISTRIBUTION OF PROFITS
-            # sns.histplot(pd.Series(profits), bins=20)
-            # plt.title(f"Distribution of Breakout Profits for {ticker.upper()}")
-            # plt.text(0.95, 0.95, f"Total Breakouts: {len(profits)} \n Ave. Positive Profit: {ave_positive_profit}% \n Ave. Negative Profit: {ave_negative_profit}% \n Win Rate: {win_rate}% \n Loss Rate: {loss_rate}% \n Breakeven Rate: {breakeven_rate}% \n EV: {ev}%", 
-            #         ha='right', va='top', transform=plt.gca().transAxes)
-            # plt.ylabel('Number of Breakouts')
-            # plt.xlabel('Profit (%)')
-            # plt.show()
         else:
             pass
     except (ValueError, UnboundLocalError):
@@ -143,3 +132,12 @@ def saveResults(results):
     json.dump(results, open(f'C:/Users/clata/OneDrive/Desktop/python/work/stock breakout/results/{file_name}','w'), indent = 4)
     return
 
+def count_nested_dicts(dictionary):
+    count = 0
+
+    for value in dictionary.values():
+        if isinstance(value, dict):
+            # If the value is a dictionary, recursively count its nested dictionaries
+            count += 1 + count_nested_dicts(value)
+
+    print(count)
