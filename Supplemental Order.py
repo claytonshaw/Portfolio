@@ -10,10 +10,10 @@ import numpy as np
 
 # list of parameters
 use_custom_vendor_packs = True # switch this to False to use Max Shelf Qty as the cut off
-send_to_zero_oh_and_fcst_stores = True # this only changes if using customer vendor packs
 vendor_packs_to_send = 1 # number of vendor packs to send to stores
 use_available = True # use either on hand or the available inventory
 sort_by_zero_oh = True # if true we will target stores that have zero on hand first
+use_custom_inventory = False #switch to true to use the custom inventory report
 
 # path to data
 file_path = "Supplemental Order Data.xlsx"
@@ -34,8 +34,14 @@ def blank_rows(file_path):
 
 # import necessary files
 df = pd.read_excel(file_path, skiprows=blank_rows(file_path))
-available_inventory = pd.read_excel(r"Available Inventory.xlsx", skiprows=1) # this dataset gets updated from domo
-#available_inventory = pd.read_csv(r"Available Inventory 1.csv") # use this dataset if you want to customize the on hand
+#filtering out unwanted states
+unwanted_states = ['AK','HI','PR']
+df = df[~df['State'].isin(unwanted_states)]
+
+if use_custom_inventory:
+    available_inventory = pd.read_csv(r"Available Inventory 1.csv") # use this dataset if you want to customize the on hand
+else:
+    available_inventory = pd.read_excel(r"Available Inventory.xlsx", skiprows=1) # this dataset gets updated from domo
 
 # getting the unique list of SKU's and saving it to dataframe
 unique_sku = df['Vendor Stk Nbr'].unique()
@@ -49,13 +55,12 @@ df['whse_pks_needed'] = df['pipe_minus_fcst'] / df['VNPK Qty'] # converting to v
 df['whse_pks_needed'] = df['whse_pks_needed'].apply(np.ceil) # rounding up to the nearest whole number
 if use_custom_vendor_packs:
     df['pipe_need'] = df.apply(lambda row: vendor_packs_to_send if row['whse_pks_needed'] > vendor_packs_to_send else row['whse_pks_needed'], axis=1)
-    if send_to_zero_oh_and_fcst_stores:
-        df['pipe_need'] = df.apply(lambda row: vendor_packs_to_send if (row['6_wk_fcst'] == 0 or row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) # if the store's forecast and on hand is zero make the units need max shelf minus pipeline
+    df['pipe_need'] = df.apply(lambda row: vendor_packs_to_send if (row['6_wk_fcst'] == 0 and row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) # if the store's forecast and on hand is zero make the units need max shelf minus pipeline
 else:
     df['pipe_need'] = df['whse_pks_needed'] * df['VNPK Qty'] # converting back to units
     df['mx_shelf_minus_pipeline'] = df.apply(lambda row: 0 if row['Max Shelf Qty'] - row['PIPELINE'] < 0 else row['Max Shelf Qty'] - row['PIPELINE'], axis=1) # if max shelf qty minus pipe is les than 0 make it zero other wise make it the difference between max shelf and the pipe
     df['pipe_need'] = df.apply(lambda row: row['Max Shelf Qty'] if row['pipe_need'] > row['Max Shelf Qty'] else row['pipe_need'], axis=1) # if the max shelf qty is less than the needed amount just make it max shelf qty
-    df['pipe_need'] = df.apply(lambda row: row['mx_shelf_minus_pipeline'] if (row['6_wk_fcst'] == 0 or row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) # if the store's forecast and on hand is zero make the units need max shelf minus pipeline
+    df['pipe_need'] = df.apply(lambda row: row['mx_shelf_minus_pipeline'] if (row['6_wk_fcst'] == 0 and row['Curr Str On Hand Qty'] == 0) else row['pipe_need'], axis=1) # if the store's forecast and on hand is zero make the units need max shelf minus pipeline
     df['pipe_need'] = df['pipe_need'] / df['VNPK Qty'] # converting to vendor packs
     df['pipe_need'] = df['pipe_need'].apply(np.ceil) # rounding up to the nearest whole number
 
