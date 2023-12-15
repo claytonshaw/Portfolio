@@ -1,4 +1,4 @@
-from functions import breakout_profitability, saveResults
+from functions import breakout_profitability, saveResults, count_nested_dicts
 from yahoo_fin import stock_info as si
 import pandas as pd
 
@@ -37,7 +37,7 @@ results = {}
 for stock in sav_set:
     try:
         stock_info = {}
-        eb, wr, br, lr, app, anp, ev, tb = breakout_profitability(stock, 1000)
+        eb, wr, br, lr, app, anp, ev, tb = breakout_profitability(stock, 500, 10)
         stock_info['earliest_breakout'] = eb
         stock_info['total_breakouts'] = tb
         stock_info['breakeven_rate'] = f'{br}%'
@@ -52,3 +52,5 @@ for stock in sav_set:
         pass
 
 saveResults(results)
+
+count_nested_dicts(results)
