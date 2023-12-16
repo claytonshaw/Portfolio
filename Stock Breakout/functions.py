@@ -131,13 +131,3 @@ def saveResults(results):
     file_name = f'results_{curr_day}'
     json.dump(results, open(f'C:/Users/clata/OneDrive/Desktop/python/work/stock breakout/results/{file_name}','w'), indent = 4)
     return
-
-def count_nested_dicts(dictionary):
-    count = 0
-
-    for value in dictionary.values():
-        if isinstance(value, dict):
-            # If the value is a dictionary, recursively count its nested dictionaries
-            count += 1 + count_nested_dicts(value)
-
-    print(count)
