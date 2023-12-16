@@ -1,4 +1,4 @@
-from functions import breakout_profitability, saveResults, count_all_values
+from functions import breakout_profitability, saveResults
 from yahoo_fin import stock_info as si
 import pandas as pd
 
@@ -34,10 +34,16 @@ print( f'There are {len( sav_set )} qualified stock symbols...' )
 
 results = {}
 
+# list of parameters
+account_value = 3238.29 # updated 12/16/2023
+dollars_to_trade = account_value * 0.05
+target_ev = 10
+
+# loop through each stock to get info
 for stock in sav_set:
     try:
         stock_info = {}
-        eb, wr, br, lr, app, anp, ev, tb = breakout_profitability(stock, 500, 10)
+        eb, wr, br, lr, app, anp, ev, tb = breakout_profitability(stock, dollars_to_trade, target_ev)
         stock_info['earliest_breakout'] = eb
         stock_info['total_breakouts'] = tb
         stock_info['breakeven_rate'] = f'{br}%'
@@ -51,6 +57,10 @@ for stock in sav_set:
     except TypeError:
         pass
 
+# function that saves results in a new file in the results folder
 saveResults(results)
+number_of_stocks = len(results)
 
-count_all_values(results)
+# printing info to use when making the trades
+print("Number of Stocks to Trade:", number_of_stocks)
+print("Amount to use on each trade:", dollars_to_trade/number_of_stocks)
