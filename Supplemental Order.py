@@ -3,12 +3,13 @@ from yahoo_fin import stock_info as si
 import pandas as pd
 import datetime
 
+# if current day is monday we will look back to friday else we look back one day
 current_date = datetime.datetime.now()
 day_of_week = current_date.weekday()
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 week_day = days_of_week[day_of_week]
 
-if week_day == 'Friday':
+if week_day == 'Monday':
     days_back = 3
 else:
     days_back = 1
