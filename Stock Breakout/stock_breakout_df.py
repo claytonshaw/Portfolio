@@ -1,6 +1,17 @@
 from functions import breakout_profitability, saveResults
 from yahoo_fin import stock_info as si
 import pandas as pd
+import datetime
+
+current_date = datetime.datetime.now()
+day_of_week = current_date.weekday()
+days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+week_day = days_of_week[day_of_week]
+
+if week_day == 'Friday':
+    days_back = 3
+else:
+    days_back = 1
 
 # gather stock symbols from major US exchanges
 df1 = pd.DataFrame(si.tickers_sp500())
@@ -43,7 +54,7 @@ target_ev = 10
 for stock in sav_set:
     try:
         stock_info = {}
-        eb, wr, br, lr, app, anp, ev, tb = breakout_profitability(stock, dollars_to_trade, target_ev)
+        eb, wr, br, lr, app, anp, ev, tb = breakout_profitability(stock, dollars_to_trade, target_ev, days_back)
         stock_info['earliest_breakout'] = eb
         stock_info['total_breakouts'] = tb
         stock_info['breakeven_rate'] = f'{br}%'
@@ -63,4 +74,4 @@ number_of_stocks = len(results)
 
 # printing info to use when making the trades
 print("Number of Stocks to Trade:", number_of_stocks)
-print("Amount to use on each trade:", dollars_to_trade/number_of_stocks)
+print("Amount to use on each trade:", f"${dollars_to_trade/number_of_stocks}")
