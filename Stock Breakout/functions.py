@@ -1,5 +1,5 @@
 # breakout function
-def breakout_profitability(ticker, dollars, ev):
+def breakout_profitability(ticker, dollars, ev, days_back):
     '''A function that returns a histogram and probabilistic information for all breakouts of a stock using its historical daily prices'''
     # Import libraries
     from yahoo_fin.stock_info import get_data
@@ -110,7 +110,7 @@ def breakout_profitability(ticker, dollars, ev):
         pass
     # NOTE: breakout_dates are in timestamp, so we have to convert to date format
     try:
-        curr_day = pd.to_datetime(datetime.today().date() - timedelta(days=1)).strftime('%Y-%m-%d')
+        curr_day = pd.to_datetime(datetime.today().date() - timedelta(days=days_back)).strftime('%Y-%m-%d')
         breakout_dates = pd.to_datetime(breakouts['date'])
         earliest_breakout = breakout_dates.min().strftime('%Y-%m-%d')
         latest_breaktout = breakout_dates.max().strftime('%Y-%m-%d')
@@ -129,5 +129,5 @@ def saveResults(results):
     import json
     curr_day = pd.to_datetime(datetime.today().date()).strftime('%Y-%m-%d')
     file_name = f'results_{curr_day}'
-    json.dump(results, open(f'C:/Users/clata/OneDrive/Desktop/python/work/stock breakout/results/{file_name}','w'), indent = 4)
+    json.dump(results, open(f'C:/Users/clayton/OneDrive - Blackstone Products LLC/Documents/Python Scripts/Stock Breakout/results/{file_name}','w'), indent = 4)
     return
