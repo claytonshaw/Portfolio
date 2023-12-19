@@ -8,12 +8,13 @@
 import pandas as pd
 import numpy as np
 
-# list of parameters
-use_custom_vendor_packs = True # switch this to False to use Max Shelf Qty as the cut off
+# list of parameters (RUN THROUGH THESE BEFORE YOU RUN THROUG THE REPORT)
+use_custom_vendor_packs = False # switch this to False to use Max Shelf Qty as the cut off
 vendor_packs_to_send = 1 # number of vendor packs to send to stores
-use_available = True # use either on hand or the available inventory
+use_available = True # use either on hand or the available inventory (doesn't matter if you have just_find_need as "True")
 sort_by_zero_oh = True # if true we will target stores that have zero on hand first
 use_custom_inventory = False #switch to true to use the custom inventory report
+just_find_need = True # makes the on hand qty 1 million so we can find the need and not be limited by what is on hand (switch to false to use either on hand or available)
 
 # path to data
 file_path = "Supplemental Order Data.xlsx"
@@ -78,10 +79,13 @@ for item in unique_sku:
 
     # getting available inventory 
     blkst_oh = available_inventory[available_inventory['Item'] == item]
-    if use_available:
-        available_inv = float(blkst_oh.iloc[0][7]) / float(blkst_oh.iloc[0][9]) # uses available - split pack (converts to vendor packs)
+    if just_find_need:
+        available_inv = float(1000000) # makes the on hand qty 1 million so we can find the need and not be limited by what is on hand
     else:
-        available_inv = float(blkst_oh.iloc[0][2]) / float(blkst_oh.iloc[0][9]) # uses on hand inventory (converts to vendor packs)
+        if use_available:
+            available_inv = float(blkst_oh.iloc[0][7]) / float(blkst_oh.iloc[0][9]) # uses available - split pack (converts to vendor packs)
+        else:
+            available_inv = float(blkst_oh.iloc[0][2]) / float(blkst_oh.iloc[0][9]) # uses on hand inventory (converts to vendor packs)
 
     #reducing available inventory for shared items
     shared_items = [1528,4114,5017,5091,5249,5471]
