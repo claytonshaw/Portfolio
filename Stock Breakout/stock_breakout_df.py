@@ -3,12 +3,13 @@ from yahoo_fin import stock_info as si
 import pandas as pd
 import datetime
 
+# if current day is monday we will look back to friday else we look back one day
 current_date = datetime.datetime.now()
 day_of_week = current_date.weekday()
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 week_day = days_of_week[day_of_week]
 
-if week_day == 'Friday':
+if week_day == 'Monday':
     days_back = 3
 else:
     days_back = 1
@@ -47,7 +48,7 @@ results = {}
 
 # list of parameters
 account_value = 3238.29 # updated 12/16/2023
-dollars_to_trade = account_value * 0.05
+dollars_to_trade = account_value / 10 # seperate the account value into 10 equal portions because we have a 10 day holding period
 target_ev = 10
 
 # loop through each stock to get info
@@ -74,4 +75,4 @@ number_of_stocks = len(results)
 
 # printing info to use when making the trades
 print("Number of Stocks to Trade:", number_of_stocks)
-print("Amount to use on each trade:", f"${dollars_to_trade/number_of_stocks}")
+print("Max available per trade:", f"${round(dollars_to_trade/number_of_stocks, ndigits=2)}") 
