@@ -129,5 +129,5 @@ def saveResults(results):
     import json
     curr_day = pd.to_datetime(datetime.today().date()).strftime('%Y-%m-%d')
     file_name = f'results_{curr_day}'
-    json.dump(results, open(f'C:/Users/clayton/OneDrive - Blackstone Products LLC/Documents/Python Scripts/Stock Breakout/results/{file_name}','w'), indent = 4)
+    json.dump(results, open(f'C:/Users/clata/OneDrive/Desktop/python/work/stock breakout/results/{file_name}','w'), indent = 4)
     return
