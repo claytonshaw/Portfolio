@@ -49,11 +49,9 @@ else:
 sto_single = pd.DataFrame()
 sto_multi = pd.DataFrame()
 
-for item in unique_sku:
-    
+for item in unique_sku: 
     #filtering column to the desired sku and sorting it by pipeline
     df_filtered = df[df['Vendor Stk Nbr'] == item]
-    df_filtered = df_filtered[df_filtered['Curr Valid Store/Item Comb.'] == 1] # filtering to only valid stores
     df_filtered = df_filtered[df_filtered['Store Type Descr'] != 'BASE STR Nghbrhd Mkt'] # filtering out Neighborhood Market stores
     if sort_by_zero_oh:
         df_filtered = df_filtered.sort_values(by = ['Curr Str On Hand Qty', 'pipe_need'], ascending=[False, False]).reset_index() # sort by stores that have zero on hand and pipe need
@@ -61,13 +59,13 @@ for item in unique_sku:
         df_filtered = df_filtered.sort_values('pipe_need', ascending=False).reset_index() # sorting to rank stores with the highest pipe_need
 
     # Getting IDC On Hand
-    idc_6060_oh = df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6060]
-    idc_6061_oh = df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6061]
-    idc_6088_oh = df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6088]
-    idc_7042_oh = df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 7042]
-    idc_7067_oh = df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 7067]
-    idc_7078_oh = df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 7078]
-    idc_8980_oh = df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6060] 
+    idc_6060_oh = sum(df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6060])
+    idc_6061_oh = sum(df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6061])
+    idc_6088_oh = sum(df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6088])
+    idc_7042_oh = sum(df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 7042])
+    idc_7067_oh = sum(df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 7067])
+    idc_7078_oh = sum(df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 7078])
+    idc_8980_oh = sum(df_filtered['Curr Whse On Hand Qty'][df_filtered['Whse Nbr'] == 6060])
 
     idc_oh = {6060:idc_6060_oh,6061:idc_6061_oh,6088:idc_6088_oh,7042:idc_7042_oh,7067:idc_7067_oh,7078:idc_7078_oh,8980:idc_8980_oh}
 
@@ -122,6 +120,7 @@ for item in unique_sku:
             6009:dc_6009_oh, 6025:dc_6025_oh, 6043:dc_6043_oh, 6092:dc_6092_oh, 7039:dc_7039_oh, 6024:dc_6024_oh, 6039:dc_6039_oh, 6040:dc_6040_oh,
             6070:dc_6070_oh, 7045:dc_7045_oh}
 
+    df_filtered = df_filtered[df_filtered['Curr Valid Store/Item Comb.'] == 1] # filtering to only valid stores
 
     # calculation for Rolling Sum IC
     df_filtered['vnpks_sent_dc'] = 0
@@ -129,13 +128,11 @@ for item in unique_sku:
 
     for i in range(len(df_filtered)):
         try:
-            if df_filtered['pipe_need'][i] > dc_oh[df_filtered['Whse Nbr'][i]]:
+            if (df_filtered['pipe_need'][i] > dc_oh[df_filtered['Whse Nbr'][i]]) & (df_filtered['pipe_need'][i] > idc_oh[df_filtered['IDC'][i]]):
                 df_filtered['vnpks_sent_dc'][i] = 0
             elif df_filtered['pipe_need'][i] < dc_oh[df_filtered['Whse Nbr'][i]]:
                 df_filtered['vnpks_sent_dc'][i] = df_filtered['pipe_need'][i]
                 dc_oh[df_filtered['Whse Nbr'][i]] -= df_filtered['pipe_need'][i]
-            elif df_filtered['pipe_need'][i] > idc_oh[df_filtered['IDC'][i]].values:
-                df_filtered['vnpks_sent_idc'][i] = 0
             else:
                 df_filtered['vnpks_sent_idc'][i] = df_filtered['pipe_need'][i]
                 idc_oh[df_filtered['IDC'][i]] -= df_filtered['pipe_need'][i]
@@ -163,10 +160,12 @@ for item in unique_sku:
     except ValueError:
         pass
 
-#dropping rows where the DC's aren't sending anything
-#sto_single = sto_single.loc[sto_single['units_sent_dc'] != 0]
-#sto_multi = sto_multi.loc[sto_multi['units_sent_idc'] != 0]
+###### END OF THE FOR LOOP
 
-df_filtered.to_excel(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\DC Push\DC Push TESTER.xlsx")
-sto_single.to_excel(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\DC Push\sto_single_.xlsx")
-sto_multi.to_excel(r"C:\Users\clayton\OneDrive - Blackstone Products LLC\Documents\Python Scripts\DC Push\sto_multi_.xlsx")
+#dropping rows where the DC's aren't sending anything
+sto_single = sto_single.loc[sto_single['vnpks_sent_dc'] != 0]
+sto_multi = sto_multi.loc[sto_multi['vnpks_sent_idc'] != 0]
+
+df_filtered.to_excel('DC Push TESTER.xlsx')
+sto_single.to_excel('sto_single_.xlsx')
+sto_multi.to_excel('sto_multi_.xlsx')
