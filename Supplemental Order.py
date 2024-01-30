@@ -9,12 +9,12 @@ import pandas as pd
 import numpy as np
 
 # list of parameters (RUN THROUGH THESE BEFORE YOU RUN THROUG THE REPORT)
-use_custom_vendor_packs = False # switch this to False to use Max Shelf Qty as the cut off
+use_custom_vendor_packs = True # switch this to False to use Max Shelf Qty as the cut off
 vendor_packs_to_send = 1 # number of vendor packs to send to stores
-use_available = True # use either on hand or the available inventory (doesn't matter if you have just_find_need as "True")
+use_available = False # use either on hand or the available inventory (doesn't matter if you have just_find_need as "True")
 sort_by_zero_oh = True # if true we will target stores that have zero on hand first
 use_custom_inventory = False #switch to true to use the custom inventory report
-just_find_need = True # makes the on hand qty 1 million so we can find the need and not be limited by what is on hand (switch to false to use either on hand or available)
+just_find_need = False # makes the on hand qty 1 million so we can find the need and not be limited by what is on hand (switch to false to use either on hand or available)
 
 # path to data
 file_path = "Supplemental Order Data.xlsx"
@@ -133,7 +133,7 @@ for item in unique_sku:
 df_filtered.to_excel(r"Supplemental Order TESTER.xlsx")
 sto_single.to_excel(r"sto_single_.xlsx")
 
-# printing total units sent and number of stores by item
+# printing total vnpks sent and number of stores by item
 sum_by_item = sto_single.groupby('Vendor Stk Nbr')['vnpks_sent_dc'].sum()
 store_count_by_item = sto_single.groupby('Vendor Stk Nbr')['vnpks_sent_dc'].count()
 
