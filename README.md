@@ -10,8 +10,7 @@ Calculates what quantity to send from our warehouse to the stores based on store
 ## Zip2fips
 Simple script that changed a json file full of fips codes to an csv file of zip codes. 
 
-##
-Stock Breakout
+## Stock Breakout
 Script that will run through stock ticker symbols and look for a breakout indicator from the prior trading day. It will then compile all the stocks along with the number of breakouts, percentage of success, and etc in a json file that the individual can review.
 
 ## Streamlit Fcst Dashboard
