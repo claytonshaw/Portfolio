@@ -7,8 +7,7 @@ Calculates what quantity to push from DC's to Stores based on the store forecast
 ## Supplemental Order
 Calculates what quantity to send from our warehouse to the stores based on stores forecast and pipeline for each store and item selected. 
 
-##
-Zip2fips
+## Zip2fips
 Simple script that changed a json file full of fips codes to an csv file of zip codes. 
 
 ##
