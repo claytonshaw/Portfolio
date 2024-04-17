@@ -149,7 +149,7 @@ for item in unique_sku:
 
     # Selecting Columns to Keep
     dc_columns = ['Prime Item Nbr', 'Vendor Stk Nbr','Store Nbr','Whse Nbr','vnpks_sent_dc']
-    idc_columns = ['Prime Item Nbr', 'Vendor Stk Nbr','Store Nbr','Whse Nbr','vnpks_sent_idc']
+    idc_columns = ['Prime Item Nbr', 'Vendor Stk Nbr','Store Nbr','IDC','vnpks_sent_idc']
     # Select the specified columns and put it into a new DF
     try:
         sto_single = sto_single.append(df_filtered[dc_columns])
