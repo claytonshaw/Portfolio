@@ -1,0 +1,303 @@
+2024-04-25 10:56:18,709:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 10:56:18,709:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 10:56:18,709:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 10:56:18,709:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 10:59:03,820:INFO:PyCaret ClusteringExperiment
+2024-04-25 10:59:03,821:INFO:Logging name: cluster-default-name
+2024-04-25 10:59:03,821:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 10:59:03,821:INFO:version 3.3.0
+2024-04-25 10:59:03,821:INFO:Initializing setup()
+2024-04-25 10:59:03,821:INFO:self.USI: a8d5
+2024-04-25 10:59:03,821:INFO:self._variable_keys: {'data', 'html_param', 'gpu_param', '_ml_usecase', 'X', 'exp_name_log', '_available_plots', 'memory', 'idx', 'n_jobs_param', 'exp_id', 'USI', 'gpu_n_jobs_param', 'pipeline', 'seed', 'log_plots_param', 'logging_param'}
+2024-04-25 10:59:03,821:INFO:Checking environment
+2024-04-25 10:59:03,821:INFO:python_version: 3.11.9
+2024-04-25 10:59:03,821:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 10:59:03,821:INFO:machine: AMD64
+2024-04-25 10:59:03,821:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 10:59:03,832:INFO:Memory: svmem(total=33099800576, available=13529735168, percent=59.1, used=19570065408, free=13529735168)
+2024-04-25 10:59:03,832:INFO:Physical Core: 8
+2024-04-25 10:59:03,833:INFO:Logical Core: 16
+2024-04-25 10:59:03,833:INFO:Checking libraries
+2024-04-25 10:59:03,833:INFO:System:
+2024-04-25 10:59:03,833:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 10:59:03,833:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 10:59:03,833:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 10:59:03,833:INFO:PyCaret required dependencies:
+2024-04-25 10:59:04,169:WARNING:c:\Users\clayton\AppData\Local\Programs\Python\Python311\Lib\site-packages\dask\dataframe\_pyarrow_compat.py:23: UserWarning: You are using pyarrow version 12.0.1 which is known to be insecure. See https://www.cve.org/CVERecord?id=CVE-2023-47248 for further details. Please upgrade to pyarrow>=14.0.1 or install pyarrow-hotfix to patch your current version.
+2024-04-25 10:59:04,169:WARNING:  warnings.warn(
+2024-04-25 10:59:18,388:INFO:PyCaret ClusteringExperiment
+2024-04-25 10:59:18,388:INFO:Logging name: cluster-default-name
+2024-04-25 10:59:18,388:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 10:59:18,388:INFO:version 3.3.0
+2024-04-25 10:59:18,388:INFO:Initializing setup()
+2024-04-25 10:59:18,388:INFO:self.USI: 47a9
+2024-04-25 10:59:18,388:INFO:self._variable_keys: {'data', 'html_param', 'gpu_param', '_ml_usecase', 'X', 'exp_name_log', '_available_plots', 'memory', 'idx', 'n_jobs_param', 'exp_id', 'USI', 'gpu_n_jobs_param', 'pipeline', 'seed', 'log_plots_param', 'logging_param'}
+2024-04-25 10:59:18,388:INFO:Checking environment
+2024-04-25 10:59:18,388:INFO:python_version: 3.11.9
+2024-04-25 10:59:18,388:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 10:59:18,388:INFO:machine: AMD64
+2024-04-25 10:59:18,388:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 10:59:18,400:INFO:Memory: svmem(total=33099800576, available=13425258496, percent=59.4, used=19674542080, free=13425258496)
+2024-04-25 10:59:18,400:INFO:Physical Core: 8
+2024-04-25 10:59:18,400:INFO:Logical Core: 16
+2024-04-25 10:59:18,400:INFO:Checking libraries
+2024-04-25 10:59:18,400:INFO:System:
+2024-04-25 10:59:18,400:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 10:59:18,400:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 10:59:18,400:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 10:59:18,400:INFO:PyCaret required dependencies:
+2024-04-25 10:59:30,770:INFO:PyCaret ClusteringExperiment
+2024-04-25 10:59:30,770:INFO:Logging name: cluster-default-name
+2024-04-25 10:59:30,770:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 10:59:30,770:INFO:version 3.3.0
+2024-04-25 10:59:30,771:INFO:Initializing setup()
+2024-04-25 10:59:30,771:INFO:self.USI: 22eb
+2024-04-25 10:59:30,771:INFO:self._variable_keys: {'data', 'html_param', 'gpu_param', '_ml_usecase', 'X', 'exp_name_log', '_available_plots', 'memory', 'idx', 'n_jobs_param', 'exp_id', 'USI', 'gpu_n_jobs_param', 'pipeline', 'seed', 'log_plots_param', 'logging_param'}
+2024-04-25 10:59:30,771:INFO:Checking environment
+2024-04-25 10:59:30,771:INFO:python_version: 3.11.9
+2024-04-25 10:59:30,771:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 10:59:30,771:INFO:machine: AMD64
+2024-04-25 10:59:30,771:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 10:59:30,783:INFO:Memory: svmem(total=33099800576, available=13557284864, percent=59.0, used=19542515712, free=13557284864)
+2024-04-25 10:59:30,783:INFO:Physical Core: 8
+2024-04-25 10:59:30,784:INFO:Logical Core: 16
+2024-04-25 10:59:30,784:INFO:Checking libraries
+2024-04-25 10:59:30,784:INFO:System:
+2024-04-25 10:59:30,785:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 10:59:30,785:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 10:59:30,785:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 10:59:30,785:INFO:PyCaret required dependencies:
+2024-04-25 11:00:10,285:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:00:10,285:INFO:Logging name: cluster-default-name
+2024-04-25 11:00:10,286:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:00:10,286:INFO:version 3.3.0
+2024-04-25 11:00:10,287:INFO:Initializing setup()
+2024-04-25 11:00:10,287:INFO:self.USI: 06ff
+2024-04-25 11:00:10,288:INFO:self._variable_keys: {'data', 'html_param', 'gpu_param', '_ml_usecase', 'X', 'exp_name_log', '_available_plots', 'memory', 'idx', 'n_jobs_param', 'exp_id', 'USI', 'gpu_n_jobs_param', 'pipeline', 'seed', 'log_plots_param', 'logging_param'}
+2024-04-25 11:00:10,288:INFO:Checking environment
+2024-04-25 11:00:10,288:INFO:python_version: 3.11.9
+2024-04-25 11:00:10,288:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:00:10,288:INFO:machine: AMD64
+2024-04-25 11:00:10,288:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:00:10,300:INFO:Memory: svmem(total=33099800576, available=13549547520, percent=59.1, used=19550253056, free=13549547520)
+2024-04-25 11:00:10,300:INFO:Physical Core: 8
+2024-04-25 11:00:10,301:INFO:Logical Core: 16
+2024-04-25 11:00:10,301:INFO:Checking libraries
+2024-04-25 11:00:10,301:INFO:System:
+2024-04-25 11:00:10,301:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:00:10,301:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:00:10,301:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:00:10,302:INFO:PyCaret required dependencies:
+2024-04-25 11:00:16,123:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:00:16,123:INFO:Logging name: cluster-default-name
+2024-04-25 11:00:16,123:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:00:16,125:INFO:version 3.3.0
+2024-04-25 11:00:16,125:INFO:Initializing setup()
+2024-04-25 11:00:16,126:INFO:self.USI: 2a17
+2024-04-25 11:00:16,126:INFO:self._variable_keys: {'data', 'html_param', 'gpu_param', '_ml_usecase', 'X', 'exp_name_log', '_available_plots', 'memory', 'idx', 'n_jobs_param', 'exp_id', 'USI', 'gpu_n_jobs_param', 'pipeline', 'seed', 'log_plots_param', 'logging_param'}
+2024-04-25 11:00:16,126:INFO:Checking environment
+2024-04-25 11:00:16,126:INFO:python_version: 3.11.9
+2024-04-25 11:00:16,126:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:00:16,126:INFO:machine: AMD64
+2024-04-25 11:00:16,127:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:00:16,138:INFO:Memory: svmem(total=33099800576, available=13548224512, percent=59.1, used=19551576064, free=13548224512)
+2024-04-25 11:00:16,138:INFO:Physical Core: 8
+2024-04-25 11:00:16,138:INFO:Logical Core: 16
+2024-04-25 11:00:16,138:INFO:Checking libraries
+2024-04-25 11:00:16,138:INFO:System:
+2024-04-25 11:00:16,138:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:00:16,138:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:00:16,138:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:00:16,138:INFO:PyCaret required dependencies:
+2024-04-25 11:00:58,115:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:00:58,115:INFO:Logging name: cluster-default-name
+2024-04-25 11:00:58,115:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:00:58,115:INFO:version 3.3.0
+2024-04-25 11:00:58,115:INFO:Initializing setup()
+2024-04-25 11:00:58,115:INFO:self.USI: 8da9
+2024-04-25 11:00:58,115:INFO:self._variable_keys: {'data', 'html_param', 'gpu_param', '_ml_usecase', 'X', 'exp_name_log', '_available_plots', 'memory', 'idx', 'n_jobs_param', 'exp_id', 'USI', 'gpu_n_jobs_param', 'pipeline', 'seed', 'log_plots_param', 'logging_param'}
+2024-04-25 11:00:58,115:INFO:Checking environment
+2024-04-25 11:00:58,115:INFO:python_version: 3.11.9
+2024-04-25 11:00:58,115:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:00:58,115:INFO:machine: AMD64
+2024-04-25 11:00:58,115:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:00:58,133:INFO:Memory: svmem(total=33099800576, available=13561294848, percent=59.0, used=19538505728, free=13561294848)
+2024-04-25 11:00:58,133:INFO:Physical Core: 8
+2024-04-25 11:00:58,133:INFO:Logical Core: 16
+2024-04-25 11:00:58,134:INFO:Checking libraries
+2024-04-25 11:00:58,134:INFO:System:
+2024-04-25 11:00:58,134:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:00:58,134:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:00:58,134:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:00:58,134:INFO:PyCaret required dependencies:
+2024-04-25 11:02:34,166:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:02:34,167:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:02:34,167:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:02:34,167:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:02:34,794:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:02:34,794:INFO:Logging name: cluster-default-name
+2024-04-25 11:02:34,794:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:02:34,794:INFO:version 3.3.0
+2024-04-25 11:02:34,794:INFO:Initializing setup()
+2024-04-25 11:02:34,796:INFO:self.USI: a4da
+2024-04-25 11:02:34,796:INFO:self._variable_keys: {'html_param', 'exp_id', 'log_plots_param', 'logging_param', 'n_jobs_param', 'idx', '_available_plots', 'gpu_param', 'X', 'pipeline', 'seed', 'data', 'gpu_n_jobs_param', 'memory', '_ml_usecase', 'USI', 'exp_name_log'}
+2024-04-25 11:02:34,796:INFO:Checking environment
+2024-04-25 11:02:34,796:INFO:python_version: 3.11.9
+2024-04-25 11:02:34,796:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:02:34,796:INFO:machine: AMD64
+2024-04-25 11:02:34,796:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:02:34,809:INFO:Memory: svmem(total=33099800576, available=13499088896, percent=59.2, used=19600711680, free=13499088896)
+2024-04-25 11:02:34,810:INFO:Physical Core: 8
+2024-04-25 11:02:34,810:INFO:Logical Core: 16
+2024-04-25 11:02:34,810:INFO:Checking libraries
+2024-04-25 11:02:34,810:INFO:System:
+2024-04-25 11:02:34,810:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:02:34,810:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:02:34,810:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:02:34,810:INFO:PyCaret required dependencies:
+2024-04-25 11:02:35,017:WARNING:c:\Users\clayton\AppData\Local\Programs\Python\Python311\Lib\site-packages\dask\dataframe\_pyarrow_compat.py:23: UserWarning: You are using pyarrow version 12.0.1 which is known to be insecure. See https://www.cve.org/CVERecord?id=CVE-2023-47248 for further details. Please upgrade to pyarrow>=14.0.1 or install pyarrow-hotfix to patch your current version.
+  warnings.warn(
+
+2024-04-25 11:04:02,572:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:04:02,572:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:04:02,573:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:04:02,573:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:04:03,223:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:04:03,223:INFO:Logging name: cluster-default-name
+2024-04-25 11:04:03,223:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:04:03,223:INFO:version 3.3.1
+2024-04-25 11:04:03,223:INFO:Initializing setup()
+2024-04-25 11:04:03,223:INFO:self.USI: 64e0
+2024-04-25 11:04:03,223:INFO:self._variable_keys: {'pipeline', 'USI', 'data', 'html_param', 'X', 'log_plots_param', 'exp_id', 'gpu_n_jobs_param', 'memory', 'logging_param', '_ml_usecase', '_available_plots', 'idx', 'n_jobs_param', 'seed', 'gpu_param', 'exp_name_log'}
+2024-04-25 11:04:03,223:INFO:Checking environment
+2024-04-25 11:04:03,223:INFO:python_version: 3.11.9
+2024-04-25 11:04:03,223:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:04:03,223:INFO:machine: AMD64
+2024-04-25 11:04:03,223:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:04:03,244:INFO:Memory: svmem(total=33099800576, available=13338976256, percent=59.7, used=19760824320, free=13338976256)
+2024-04-25 11:04:03,244:INFO:Physical Core: 8
+2024-04-25 11:04:03,245:INFO:Logical Core: 16
+2024-04-25 11:04:03,245:INFO:Checking libraries
+2024-04-25 11:04:03,245:INFO:System:
+2024-04-25 11:04:03,245:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:04:03,245:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:04:03,245:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:04:03,245:INFO:PyCaret required dependencies:
+2024-04-25 11:04:03,458:WARNING:c:\Users\clayton\AppData\Local\Programs\Python\Python311\Lib\site-packages\dask\dataframe\_pyarrow_compat.py:23: UserWarning: You are using pyarrow version 12.0.1 which is known to be insecure. See https://www.cve.org/CVERecord?id=CVE-2023-47248 for further details. Please upgrade to pyarrow>=14.0.1 or install pyarrow-hotfix to patch your current version.
+  warnings.warn(
+
+2024-04-25 11:04:11,421:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:04:11,421:INFO:Logging name: cluster-default-name
+2024-04-25 11:04:11,421:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:04:11,421:INFO:version 3.3.1
+2024-04-25 11:04:11,421:INFO:Initializing setup()
+2024-04-25 11:04:11,421:INFO:self.USI: 4910
+2024-04-25 11:04:11,421:INFO:self._variable_keys: {'pipeline', 'USI', 'data', 'html_param', 'X', 'log_plots_param', 'exp_id', 'gpu_n_jobs_param', 'memory', 'logging_param', '_ml_usecase', '_available_plots', 'idx', 'n_jobs_param', 'seed', 'gpu_param', 'exp_name_log'}
+2024-04-25 11:04:11,421:INFO:Checking environment
+2024-04-25 11:04:11,421:INFO:python_version: 3.11.9
+2024-04-25 11:04:11,421:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:04:11,421:INFO:machine: AMD64
+2024-04-25 11:04:11,421:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:04:11,435:INFO:Memory: svmem(total=33099800576, available=13413306368, percent=59.5, used=19686494208, free=13413306368)
+2024-04-25 11:04:11,435:INFO:Physical Core: 8
+2024-04-25 11:04:11,435:INFO:Logical Core: 16
+2024-04-25 11:04:11,435:INFO:Checking libraries
+2024-04-25 11:04:11,435:INFO:System:
+2024-04-25 11:04:11,435:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:04:11,435:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:04:11,435:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:04:11,435:INFO:PyCaret required dependencies:
+2024-04-25 11:05:13,174:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:13,174:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:13,174:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:13,174:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:36,881:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:36,881:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:36,881:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:36,881:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2024-04-25 11:05:37,574:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:05:37,575:INFO:Logging name: cluster-default-name
+2024-04-25 11:05:37,575:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:05:37,575:INFO:version 3.3.1
+2024-04-25 11:05:37,575:INFO:Initializing setup()
+2024-04-25 11:05:37,575:INFO:self.USI: c944
+2024-04-25 11:05:37,575:INFO:self._variable_keys: {'data', 'n_jobs_param', 'gpu_n_jobs_param', 'pipeline', 'memory', 'USI', '_available_plots', 'exp_id', '_ml_usecase', 'log_plots_param', 'html_param', 'idx', 'exp_name_log', 'X', 'gpu_param', 'seed', 'logging_param'}
+2024-04-25 11:05:37,575:INFO:Checking environment
+2024-04-25 11:05:37,576:INFO:python_version: 3.11.9
+2024-04-25 11:05:37,576:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:05:37,576:INFO:machine: AMD64
+2024-04-25 11:05:37,576:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:05:37,590:INFO:Memory: svmem(total=33099800576, available=13266104320, percent=59.9, used=19833696256, free=13266104320)
+2024-04-25 11:05:37,590:INFO:Physical Core: 8
+2024-04-25 11:05:37,590:INFO:Logical Core: 16
+2024-04-25 11:05:37,591:INFO:Checking libraries
+2024-04-25 11:05:37,591:INFO:System:
+2024-04-25 11:05:37,591:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:05:37,591:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:05:37,591:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:05:37,591:INFO:PyCaret required dependencies:
+2024-04-25 11:05:37,851:WARNING:c:\Users\clayton\AppData\Local\Programs\Python\Python311\Lib\site-packages\dask\dataframe\_pyarrow_compat.py:23: UserWarning: You are using pyarrow version 12.0.1 which is known to be insecure. See https://www.cve.org/CVERecord?id=CVE-2023-47248 for further details. Please upgrade to pyarrow>=14.0.1 or install pyarrow-hotfix to patch your current version.
+  warnings.warn(
+
+2024-04-25 11:07:44,723:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:07:44,723:INFO:Logging name: cluster-default-name
+2024-04-25 11:07:44,723:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:07:44,723:INFO:version 3.3.1
+2024-04-25 11:07:44,723:INFO:Initializing setup()
+2024-04-25 11:07:44,723:INFO:self.USI: 1db5
+2024-04-25 11:07:44,723:INFO:self._variable_keys: {'data', 'n_jobs_param', 'gpu_n_jobs_param', 'pipeline', 'memory', 'USI', '_available_plots', 'exp_id', '_ml_usecase', 'log_plots_param', 'html_param', 'idx', 'exp_name_log', 'X', 'gpu_param', 'seed', 'logging_param'}
+2024-04-25 11:07:44,723:INFO:Checking environment
+2024-04-25 11:07:44,723:INFO:python_version: 3.11.9
+2024-04-25 11:07:44,723:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:07:44,723:INFO:machine: AMD64
+2024-04-25 11:07:44,723:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:07:44,727:INFO:Memory: svmem(total=33099800576, available=13199831040, percent=60.1, used=19899969536, free=13199831040)
+2024-04-25 11:07:44,727:INFO:Physical Core: 8
+2024-04-25 11:07:44,727:INFO:Logical Core: 16
+2024-04-25 11:07:44,727:INFO:Checking libraries
+2024-04-25 11:07:44,727:INFO:System:
+2024-04-25 11:07:44,727:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:07:44,727:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:07:44,727:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:07:44,727:INFO:PyCaret required dependencies:
+2024-04-25 11:09:15,999:INFO:PyCaret ClusteringExperiment
+2024-04-25 11:09:15,999:INFO:Logging name: cluster-default-name
+2024-04-25 11:09:15,999:INFO:ML Usecase: MLUsecase.CLUSTERING
+2024-04-25 11:09:15,999:INFO:version 3.3.1
+2024-04-25 11:09:15,999:INFO:Initializing setup()
+2024-04-25 11:09:15,999:INFO:self.USI: fa6f
+2024-04-25 11:09:15,999:INFO:self._variable_keys: {'data', 'n_jobs_param', 'gpu_n_jobs_param', 'pipeline', 'memory', 'USI', '_available_plots', 'exp_id', '_ml_usecase', 'log_plots_param', 'html_param', 'idx', 'exp_name_log', 'X', 'gpu_param', 'seed', 'logging_param'}
+2024-04-25 11:09:15,999:INFO:Checking environment
+2024-04-25 11:09:15,999:INFO:python_version: 3.11.9
+2024-04-25 11:09:15,999:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2024-04-25 11:09:15,999:INFO:machine: AMD64
+2024-04-25 11:09:15,999:INFO:platform: Windows-10-10.0.22631-SP0
+2024-04-25 11:09:16,016:INFO:Memory: svmem(total=33099800576, available=13321076736, percent=59.8, used=19778723840, free=13321076736)
+2024-04-25 11:09:16,017:INFO:Physical Core: 8
+2024-04-25 11:09:16,017:INFO:Logical Core: 16
+2024-04-25 11:09:16,017:INFO:Checking libraries
+2024-04-25 11:09:16,017:INFO:System:
+2024-04-25 11:09:16,017:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2024-04-25 11:09:16,017:INFO:executable: c:\Users\clayton\AppData\Local\Programs\Python\Python311\python.exe
+2024-04-25 11:09:16,017:INFO:   machine: Windows-10-10.0.22631-SP0
+2024-04-25 11:09:16,018:INFO:PyCaret required dependencies:
