@@ -26,7 +26,7 @@ Script that will run through stock ticker symbols and look for a breakout indica
 This is a code that builds a dashboard using the streamlit library. The goal was to provide a place where account managers can make adjustments to their forecasts based on historical data and see real changes. 
 
 ## Work
-Files from work that include clustering, dc push, forecasting demand, store sales forecasting, and supplemental order script
+Files from work that include Clustering, DC Push, Forecasting Demand, Store Sales Forecasting, and Supplemental Order Script
 
 * ### DC Push
     * Calculates what quantity to push from DC's to Stores based on the store forecast and pipeline for each store and item selected.
