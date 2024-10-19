@@ -28,11 +28,11 @@ This is a code that builds a dashboard using the streamlit library. The goal was
 ## Work
 Files from work that include clustering, dc push, forecasting demand, store sales forecasting, and supplemental order script
 
-### DC Push
-Calculates what quantity to push from DC's to Stores based on the store forecast and pipeline for each store and item selected.
+* ### DC Push
+    * Calculates what quantity to push from DC's to Stores based on the store forecast and pipeline for each store and item selected.
 
-### Supplemental Order
-Calculates what quantity to send from our warehouse to the stores based on stores forecast and pipeline for each store and item selected. 
+* ### Supplemental Order
+    * Calculates what quantity to send from our warehouse to the stores based on stores forecast and pipeline for each store and item selected. 
 
 ## Zip2fips
 Simple script that changed a json file full of fips codes to an csv file of zip codes. 
