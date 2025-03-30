@@ -1,0 +1,49 @@
+-- Step 0 (SQL):
+-- Create a database table called BookList to hold the data
+-- * Field names as outlined in extraction below
+-- * Add Identity, Key, Constraint columns as appropriate
+-- * Provide the DDL statements used
+
+CREATE TABLE BookList (
+    BookID SERIAL PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    ISBN VARCHAR(20) NOT NULL UNIQUE,
+    NumPages INT,
+    AuthorName VARCHAR(255)
+);
+
+-- Step 4 (SQL):
+-- * Write a separate SQL report that will retrieve the 5 longest and 5 shortest books, with their ranking (e.g. books 1-5 and 25-30)
+
+WITH RankedBooks AS (
+  SELECT 
+    Title,
+    ISBN,
+    NumPages,
+    AuthorName,
+    ROW_NUMBER() OVER (ORDER BY NumPages DESC) AS LongRank,
+    COUNT(*) OVER() AS TotalBooks
+  FROM BookList
+),
+RankedShort AS (
+  SELECT 
+    Title,
+    ISBN,
+    NumPages,
+    AuthorName,
+    (TotalBooks - LongRank + 1) AS ShortRank
+  FROM RankedBooks
+)
+SELECT 
+  Title, ISBN, NumPages, AuthorName, LongRank AS Ranking, 'Longest' AS Category
+FROM RankedBooks
+WHERE LongRank <= 5
+
+UNION ALL
+
+SELECT 
+  Title, ISBN, NumPages, AuthorName, ShortRank AS Ranking, 'Shortest' AS Category
+FROM RankedShort
+WHERE ShortRank <= 5
+
+ORDER BY Category, Ranking;
